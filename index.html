@@ -3,9 +3,18 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Loopify</title>
+    <meta name="theme-color" content="#2563eb" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="Loopify" />
+    <link rel="manifest" href="manifest.json" />
+    <link rel="icon" type="image/svg+xml" href="icon.svg" />
+    <link rel="apple-touch-icon" href="icon.svg" />
+    <title>Loopify - Smart Attendance Manager</title>
     <style>
-      * {
+      *,
+      *::before,
+      *::after {
         box-sizing: border-box;
         margin: 0;
         padding: 0;
@@ -13,78 +22,85 @@
 
       :root {
         --primary: #2563eb;
+        --primary-dark: #1d4ed8;
         --primary2: #4f46e5;
         --success: #16a34a;
+        --success-bg: rgba(22, 163, 74, 0.09);
         --danger: #dc2626;
-        --bg: #f4f7fb;
-        --card: #fff;
-        --text: #111827;
-        --muted: #6b7280;
-        --border: #e5e7eb;
+        --danger-bg: rgba(220, 38, 38, 0.08);
+        --bg: #f8fafc;
+        --card: #ffffff;
+        --card-hover: rgba(37, 99, 235, 0.04);
+        --text: #0f172a;
+        --muted: #64748b;
+        --border: #e2e8f0;
+        --header-gradient: linear-gradient(135deg, #2563eb, #4f46e5, #7c3aed);
+        --footer-bg: rgba(255, 255, 255, 0.94);
+        --footer-shadow: 0 -10px 25px rgba(15, 23, 42, 0.08);
       }
 
       body.dark {
-        --bg: #080d1a;
-        --card: #111827;
-        --text: #f9fafb;
-        --muted: #9ca3af;
-        --border: #263244;
+        --bg: #0b1120;
+        --card: #151e32;
+        --card-hover: rgba(59, 130, 246, 0.07);
+        --text: #f8fafc;
+        --muted: #94a3b8;
+        --border: #1e293b;
+        --header-gradient: linear-gradient(135deg, #1e40af, #3730a3, #581c87);
+        --footer-bg: rgba(21, 30, 50, 0.94);
+        --footer-shadow: 0 -10px 25px rgba(0, 0, 0, 0.35);
       }
 
       body {
-        font-family: Arial, Helvetica, sans-serif;
-        background:
-          radial-gradient(
-            circle at top right,
-            rgba(37, 99, 235, 0.12),
-            transparent 30%
-          ),
-          var(--bg);
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+          Ubuntu, Cantarell, "Helvetica Neue", Arial, sans-serif;
+        background-color: var(--bg);
         color: var(--text);
         min-height: 100vh;
-        padding: 25px 15px;
-        transition: 0.3s;
+        padding: 20px 14px 210px;
+        transition: background-color 0.25s ease, color 0.25s ease;
+        -webkit-font-smoothing: antialiased;
       }
 
       button,
-      input {
+      input,
+      select {
         font-family: inherit;
       }
 
       button {
         cursor: pointer;
+        user-select: none;
       }
 
       .container {
         width: 100%;
-        max-width: 920px;
-        margin: auto;
+        max-width: 860px;
+        margin: 0 auto;
       }
 
-      .top-section {
-        width: 100%;
-      }
-
+      /* ===== HEADER ===== */
       .header {
         position: relative;
-        background: linear-gradient(135deg, var(--primary), var(--primary2));
-        color: #fff;
+        background: var(--header-gradient);
+        color: #ffffff;
         border-radius: 18px;
-        padding: 24px;
-        margin-bottom: 15px;
-        box-shadow: 0 15px 35px rgba(37, 99, 235, 0.22);
+        padding: 20px 22px;
+        margin-bottom: 12px;
+        box-shadow: 0 12px 30px rgba(37, 99, 235, 0.2);
         overflow: hidden;
       }
 
-      .header:before {
+      .header::before {
         content: "";
         position: absolute;
         width: 180px;
         height: 180px;
         border-radius: 50%;
-        background: rgba(255, 255, 255, 0.09);
-        right: -70px;
-        top: -70px;
+        background: rgba(255, 255, 255, 0.08);
+        right: -60px;
+        top: -60px;
+        pointer-events: none;
       }
 
       .header-content {
@@ -97,39 +113,159 @@
         justify-content: space-between;
         align-items: center;
         gap: 10px;
-        margin-bottom: 8px;
       }
 
       .header h1 {
-        font-size: 27px;
+        font-size: 24px;
+        font-weight: 800;
+        letter-spacing: -0.5px;
       }
 
       .header p {
-        font-size: 13px;
+        font-size: 12px;
         opacity: 0.88;
+        margin-top: 2px;
       }
 
       .date-text {
-        font-size: 12px;
+        font-size: 11px;
         opacity: 0.8;
-        margin-top: 5px;
+        margin-top: 3px;
       }
 
       .theme-btn {
-        width: 42px;
-        height: 42px;
+        width: 40px;
+        height: 40px;
         border: 0;
         border-radius: 50%;
-        background: rgba(255, 255, 255, 0.15);
-        color: #fff;
-        font-size: 19px;
+        background: rgba(255, 255, 255, 0.18);
+        color: #ffffff;
+        font-size: 18px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: transform 0.2s, background-color 0.2s;
       }
 
-      .date-selector {
+      .theme-btn:hover {
+        transform: rotate(18deg) scale(1.08);
+        background: rgba(255, 255, 255, 0.26);
+      }
+
+      /* ===== COURSE SELECTOR ===== */
+      .course-bar {
+        margin-top: 12px;
         display: flex;
         align-items: center;
         gap: 8px;
-        margin-top: 15px;
+        background: rgba(255, 255, 255, 0.16);
+        border: 1px solid rgba(255, 255, 255, 0.22);
+        border-radius: 12px;
+        padding: 7px 12px;
+        backdrop-filter: blur(10px);
+      }
+
+      .course-bar label {
+        font-size: 12px;
+        font-weight: 700;
+        color: #ffffff;
+        white-space: nowrap;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+      }
+
+      .course-bar select {
+        flex: 1;
+        background: transparent;
+        color: #ffffff;
+        border: 0;
+        outline: 0;
+        font-size: 13px;
+        font-weight: 700;
+        cursor: pointer;
+      }
+
+      .course-bar select option {
+        background: var(--card);
+        color: var(--text);
+        font-size: 13px;
+        font-weight: 600;
+      }
+
+      /* ===== LIVE SUMMARY & PROGRESS ===== */
+      .live-summary {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 12px;
+        font-size: 12px;
+      }
+
+      .live-summary-status {
+        display: flex;
+        align-items: center;
+        gap: 7px;
+        opacity: 0.95;
+      }
+
+      .live-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: #4ade80;
+        box-shadow: 0 0 0 4px rgba(74, 222, 128, 0.18);
+        animation: pulseDot 1.8s infinite;
+      }
+
+      @keyframes pulseDot {
+        0%,
+        100% {
+          transform: scale(1);
+          box-shadow: 0 0 0 4px rgba(74, 222, 128, 0.18);
+        }
+        50% {
+          transform: scale(1.1);
+          box-shadow: 0 0 0 7px rgba(74, 222, 128, 0.05);
+        }
+      }
+
+      .live-summary strong {
+        font-size: 13px;
+        font-weight: 800;
+      }
+
+      .header-progress {
+        height: 7px;
+        background: rgba(255, 255, 255, 0.2);
+        border-radius: 20px;
+        overflow: hidden;
+        margin-top: 8px;
+      }
+
+      .header-progress-fill {
+        height: 100%;
+        width: 0%;
+        border-radius: 20px;
+        background: #ffffff;
+        transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+
+      .header-percentage {
+        text-align: right;
+        font-size: 11px;
+        font-weight: 800;
+        margin-top: 4px;
+        opacity: 0.95;
+      }
+
+      /* ===== DATE SELECTOR ===== */
+      .date-selector {
+        position: relative;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-top: 12px;
       }
 
       .date-selector button {
@@ -137,129 +273,101 @@
         height: 36px;
         border: 0;
         border-radius: 10px;
-        background: rgba(255, 255, 255, 0.15);
-        color: #fff;
+        background: rgba(255, 255, 255, 0.18);
+        color: #ffffff;
         font-size: 18px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: transform 0.15s, background-color 0.15s;
       }
 
-      .date-selector input {
+      .date-selector button:hover {
+        background: rgba(255, 255, 255, 0.28);
+        transform: scale(1.05);
+      }
+
+      .date-selector button:active {
+        transform: scale(0.95);
+      }
+
+      .date-display {
         flex: 1;
         height: 36px;
-        border: 0;
         border-radius: 10px;
-        padding: 0 10px;
-        background: rgba(255, 255, 255, 0.15);
-        color: #fff;
-        outline: 0;
-        color-scheme: dark;
-      }
-
-      .stats {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 10px;
-        margin-bottom: 12px;
-      }
-
-      .stat-box {
-        background: var(--card);
-        border: 1px solid var(--border);
-        border-radius: 16px;
-        padding: 15px 8px;
-        text-align: center;
-        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.05);
-      }
-
-      .stat-number {
-        display: block;
-        font-size: 26px;
-        font-weight: 800;
-        color: var(--primary);
-      }
-
-      .stat-label {
-        display: block;
-        font-size: 11px;
-        color: var(--muted);
-        margin-top: 4px;
-        text-transform: uppercase;
-      }
-
-      .progress-card {
-        background: var(--card);
-        border: 1px solid var(--border);
-        border-radius: 16px;
-        padding: 14px 16px;
-        margin-bottom: 12px;
-        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.04);
-      }
-
-      .progress-top {
+        background: rgba(255, 255, 255, 0.18);
         display: flex;
-        justify-content: space-between;
         align-items: center;
-        margin-bottom: 8px;
+        justify-content: center;
         font-size: 13px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: background-color 0.15s, transform 0.15s;
+        user-select: none;
       }
 
-      .percentage {
-        font-weight: bold;
-        color: var(--success);
+      .date-display:hover {
+        background: rgba(255, 255, 255, 0.28);
       }
 
-      .progress-bar {
-        height: 9px;
-        background: var(--border);
-        border-radius: 20px;
-        overflow: hidden;
+      .date-display:active {
+        transform: scale(0.98);
       }
 
-      .progress-fill {
-        height: 100%;
+      .date-selector input[type="date"] {
+        position: absolute;
+        opacity: 0;
         width: 0;
-        border-radius: 20px;
-        background: linear-gradient(90deg, #16a34a, #22c55e);
-        transition: width 0.4s;
+        height: 0;
+        pointer-events: none;
       }
 
+      /* ===== SEARCH & FILTERS ===== */
       .search-box {
         background: var(--card);
-        padding: 10px;
-        border-radius: 15px;
+        padding: 8px 10px;
+        border-radius: 14px;
         margin-bottom: 10px;
         border: 1px solid var(--border);
-        box-shadow: 0 5px 18px rgba(0, 0, 0, 0.04);
+        box-shadow: 0 4px 14px rgba(0, 0, 0, 0.03);
       }
 
       .search-wrapper {
         position: relative;
+        display: flex;
+        align-items: center;
       }
 
       .search-icon {
         position: absolute;
-        left: 13px;
-        top: 50%;
-        transform: translateY(-50%);
-        font-size: 17px;
-        opacity: 0.65;
+        left: 12px;
+        font-size: 16px;
+        opacity: 0.6;
+        pointer-events: none;
       }
 
       .search-box input {
         width: 100%;
-        height: 45px;
+        height: 42px;
         border: 1px solid var(--border);
-        border-radius: 11px;
-        padding: 0 40px;
-        font-size: 14px;
+        border-radius: 10px;
+        padding: 0 14px 0 38px;
+        font-size: 13px;
         outline: 0;
         background: var(--bg);
         color: var(--text);
+        transition: border-color 0.2s, box-shadow 0.2s;
+      }
+
+      .search-box input:focus {
+        border-color: var(--primary);
+        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
       }
 
       .filters {
         display: flex;
         gap: 7px;
-        margin-bottom: 10px;
+        margin-bottom: 12px;
         overflow-x: auto;
         scrollbar-width: none;
       }
@@ -274,88 +382,102 @@
         background: var(--card);
         color: var(--muted);
         border-radius: 20px;
-        padding: 8px 14px;
-        font-size: 12px;
-        font-weight: bold;
+        padding: 7px 14px;
+        font-size: 11px;
+        font-weight: 700;
+        transition: all 0.15s ease;
       }
 
       .filter-btn.active {
         background: var(--primary);
-        color: #fff;
+        color: #ffffff;
         border-color: var(--primary);
       }
 
-      .student-list {
-        background: var(--card);
-        border-radius: 18px;
-        overflow: hidden;
-        border: 1px solid var(--border);
-        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.05);
-        margin-bottom: 15px;
+      .filter-btn:hover:not(.active) {
+        border-color: var(--primary);
+        color: var(--primary);
       }
 
-      .list-header,
-      .student {
-        display: grid;
-        grid-template-columns: 35px 60px 1fr 70px;
-        gap: 7px;
-        align-items: center;
+      /* ===== STUDENT LIST ===== */
+      .student-list {
+        background: var(--card);
+        border-radius: 16px;
+        overflow: hidden;
+        border: 1px solid var(--border);
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.04);
+        margin-bottom: 16px;
       }
 
       .list-header {
-        padding: 13px 15px;
+        display: grid;
+        grid-template-columns: 36px 62px 1fr 65px;
+        gap: 8px;
+        align-items: center;
+        padding: 12px 14px;
         background: rgba(37, 99, 235, 0.05);
         border-bottom: 1px solid var(--border);
         font-size: 11px;
-        font-weight: bold;
+        font-weight: 800;
         color: var(--muted);
         text-transform: uppercase;
+        letter-spacing: 0.5px;
       }
 
       .student {
-        padding: 13px 15px;
+        display: grid;
+        grid-template-columns: 36px 62px 1fr 65px;
+        gap: 8px;
+        align-items: center;
+        padding: 12px 14px;
         border-bottom: 1px solid var(--border);
-        transition: 0.2s;
+        transition: background-color 0.16s ease;
+        cursor: pointer;
+        user-select: none;
       }
 
       .student:last-child {
         border-bottom: 0;
       }
 
-      .student:active {
-        transform: scale(0.99);
+      .student:hover {
+        background-color: var(--card-hover);
       }
 
       .student.present {
-        background: rgba(22, 163, 74, 0.08);
+        background-color: var(--success-bg);
       }
 
       .serial {
         color: var(--muted);
-        font-size: 12px;
+        font-size: 11px;
+        font-weight: 600;
       }
 
       .student-id {
         font-size: 14px;
         font-weight: 800;
         color: var(--primary);
+        letter-spacing: 0.3px;
       }
 
       .student-name {
-        font-size: 14px;
-        font-weight: 600;
+        font-size: 13px;
+        font-weight: 700;
         line-height: 1.3;
       }
 
       .status-text {
         font-size: 9px;
-        margin-top: 3px;
+        margin-top: 2px;
         color: var(--muted);
+        font-weight: 600;
+        text-transform: uppercase;
       }
 
       .student.present .status-text {
         color: var(--success);
-        font-weight: bold;
+        font-weight: 800;
       }
 
       .check-area {
@@ -364,1617 +486,78 @@
         align-items: center;
       }
 
-      .check-area input {
+      .check-area input[type="checkbox"] {
         appearance: none;
-        width: 28px;
-        height: 28px;
+        -webkit-appearance: none;
+        width: 26px;
+        height: 26px;
         border: 2px solid #cbd5e1;
-        border-radius: 9px;
+        border-radius: 8px;
         cursor: pointer;
         position: relative;
         background: var(--card);
-        transition: 0.2s;
+        transition: all 0.18s ease;
       }
 
-      .check-area input:checked {
+      .check-area input[type="checkbox"]:checked {
         background: var(--success);
         border-color: var(--success);
-        box-shadow: 0 0 12px rgba(22, 163, 74, 0.3);
+        box-shadow: 0 0 10px rgba(22, 163, 74, 0.35);
       }
 
-      .check-area input:checked:after {
+      .check-area input[type="checkbox"]:checked::after {
         content: "✓";
-        color: #fff;
-        font-size: 18px;
-        font-weight: bold;
+        color: #ffffff;
+        font-size: 16px;
+        font-weight: 900;
         position: absolute;
-        left: 4px;
-        top: 0;
-        animation: checkPop 0.2s ease;
+        left: 5px;
+        top: -1px;
       }
 
-      @keyframes checkPop {
+      .check-area input.just-tapped {
+        animation: checkTap 0.22s ease;
+      }
+
+      @keyframes checkTap {
         0% {
-          transform: scale(0);
+          transform: scale(0.85);
         }
-
-        70% {
-          transform: scale(1.2);
+        60% {
+          transform: scale(1.15);
         }
-
         100% {
           transform: scale(1);
         }
-      }
-
-      .quick-actions {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 8px;
-        margin-bottom: 10px;
-      }
-
-      .quick-btn {
-        border: 1px solid var(--border);
-        border-radius: 12px;
-        padding: 11px 6px;
-        font-size: 11px;
-        font-weight: bold;
-        background: var(--card);
-        color: var(--text);
-      }
-
-      .quick-btn.primary {
-        background: var(--primary);
-        color: #fff;
-        border-color: var(--primary);
-      }
-
-      .quick-btn.success {
-        background: rgba(22, 163, 74, 0.1);
-        color: var(--success);
-      }
-
-      .quick-btn.danger {
-        background: rgba(220, 38, 38, 0.08);
-        color: var(--danger);
-      }
-
-      .actions {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 9px;
-        margin-bottom: 15px;
-      }
-
-      .action-btn {
-        border: 0;
-        border-radius: 12px;
-        padding: 13px;
-        font-size: 13px;
-        font-weight: bold;
-      }
-
-      .generate-btn {
-        background: linear-gradient(135deg, var(--primary), var(--primary2));
-        color: #fff;
-      }
-
-      .undo-btn {
-        background: var(--card);
-        color: var(--text);
-        border: 1px solid var(--border);
-      }
-
-      .export-actions {
-        display: grid;
-        grid-template-columns: 1fr 1fr 1fr;
-        gap: 8px;
-        margin-bottom: 15px;
-      }
-
-      .export-btn {
-        border: 1px solid var(--border);
-        background: var(--card);
-        color: var(--text);
-        border-radius: 11px;
-        padding: 10px;
-        font-size: 11px;
-        font-weight: bold;
-      }
-
-      .output-section {
-        background: var(--card);
-        border: 1px solid var(--border);
-        border-radius: 18px;
-        padding: 16px;
-        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.05);
-      }
-
-      .output-title {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 10px;
-      }
-
-      .output-title h2 {
-        font-size: 16px;
-      }
-
-      .copy-btn {
-        border: 0;
-        background: #111827;
-        color: #fff;
-        border-radius: 9px;
-        padding: 8px 12px;
-        font-size: 11px;
-        font-weight: bold;
-      }
-
-      body.dark .copy-btn {
-        background: #374151;
-      }
-
-      textarea {
-        width: 100%;
-        min-height: 170px;
-        resize: vertical;
-        border: 1px solid var(--border);
-        border-radius: 11px;
-        padding: 12px;
-        font-family: monospace;
-        font-size: 15px;
-        line-height: 1.7;
-        outline: 0;
-        background: var(--bg);
-        color: var(--text);
       }
 
       .empty-message {
         text-align: center;
-        padding: 35px 15px;
+        padding: 40px 15px;
         color: var(--muted);
-        font-size: 13px;
-      }
-
-      .toast {
-        position: fixed;
-        left: 50%;
-        bottom: 25px;
-        transform: translate(-50%, 100px);
-        background: #111827;
-        color: #fff;
-        padding: 12px 18px;
-        border-radius: 12px;
-        font-size: 13px;
-        font-weight: bold;
-        z-index: 99999;
-        opacity: 0;
-        transition: 0.3s;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
-      }
-
-      .toast.show {
-        transform: translate(-50%, 0);
-        opacity: 1;
-      }
-
-      @media (max-width: 600px) {
-        body {
-          padding: 0 8px 15px;
-        }
-
-        .container {
-          max-width: 100%;
-        }
-
-        .top-section {
-          position: fixed;
-          top: 0;
-          left: 0;
-          right: 0;
-          width: 100%;
-          z-index: 9999;
-          background: var(--bg);
-          padding: 10px 8px 0;
-          box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
-        }
-
-        .header {
-          padding: 17px;
-          margin-bottom: 8px;
-          border-radius: 16px;
-        }
-
-        .header h1 {
-          font-size: 21px;
-        }
-
-        .header p {
-          font-size: 11px;
-        }
-
-        .date-text {
-          font-size: 10px;
-        }
-
-        .theme-btn {
-          width: 38px;
-          height: 38px;
-          font-size: 17px;
-        }
-
-        .date-selector {
-          margin-top: 10px;
-        }
-
-        .date-selector button {
-          width: 32px;
-          height: 32px;
-        }
-
-        .date-selector input {
-          height: 32px;
-          font-size: 11px;
-        }
-
-        .stats {
-          gap: 7px;
-          margin-bottom: 8px;
-        }
-
-        .stat-box {
-          padding: 10px 5px;
-          border-radius: 13px;
-        }
-
-        .stat-number {
-          font-size: 22px;
-        }
-
-        .stat-label {
-          font-size: 9px;
-        }
-
-        .progress-card {
-          padding: 10px 12px;
-          margin-bottom: 8px;
-          border-radius: 13px;
-        }
-
-        .progress-top {
-          font-size: 11px;
-        }
-
-        .progress-bar {
-          height: 7px;
-        }
-
-        .search-box {
-          padding: 8px;
-          margin-bottom: 7px;
-        }
-
-        .search-box input {
-          height: 40px;
-          font-size: 13px;
-        }
-
-        .filters {
-          margin-bottom: 8px;
-        }
-
-        .filter-btn {
-          padding: 7px 12px;
-          font-size: 10px;
-        }
-
-        .student-list {
-          margin-top: var(--top-height, 390px);
-          border-radius: 14px;
-          margin-bottom: 12px;
-        }
-
-        .list-header,
-        .student {
-          grid-template-columns: 28px 50px 1fr 55px;
-        }
-
-        .list-header {
-          padding: 11px 9px;
-          font-size: 9px;
-        }
-
-        .student {
-          padding: 12px 9px;
-        }
-
-        .serial {
-          font-size: 10px;
-        }
-
-        .student-id {
-          font-size: 13px;
-        }
-
-        .student-name {
-          font-size: 12px;
-        }
-
-        .status-text {
-          font-size: 8px;
-        }
-
-        .check-area input {
-          width: 25px;
-          height: 25px;
-        }
-
-        .quick-actions,
-        .export-actions {
-          gap: 6px;
-        }
-
-        .quick-btn,
-        .export-btn {
-          padding: 10px 4px;
-          font-size: 9px;
-        }
-
-        .actions {
-          grid-template-columns: 1fr 1fr;
-        }
-
-        .action-btn {
-          padding: 12px 6px;
-          font-size: 11px;
-        }
-
-        .output-section {
-          padding: 13px;
-          border-radius: 15px;
-        }
-
-        .output-title h2 {
-          font-size: 14px;
-        }
-
-        .toast {
-          bottom: 20px;
-          font-size: 12px;
-        }
-      }
-
-      @media print {
-        body {
-          background: #fff !important;
-          color: #000 !important;
-          padding: 0;
-        }
-
-        .top-section,
-        .quick-actions,
-        .actions,
-        .export-actions,
-        .output-section {
-          display: none !important;
-        }
-
-        .student-list {
-          margin-top: 0 !important;
-          border: 1px solid #ccc;
-          box-shadow: none;
-        }
-
-        .student {
-          break-inside: avoid;
-        }
-
-        .check-area input {
-          display: none;
-        }
-
-        .list-header,
-        .student {
-          color: #000 !important;
-        }
-
-        .student.present {
-          background: #eee !important;
-        }
-
-        .container {
-          max-width: 100%;
-        }
-      }
-    </style>
-    <style id="modern-upgrade">
-      body {
-        background:
-          radial-gradient(
-            circle at 10% 10%,
-            rgba(79, 70, 229, 0.14),
-            transparent 28%
-          ),
-          radial-gradient(
-            circle at 90% 20%,
-            rgba(14, 165, 233, 0.12),
-            transparent 25%
-          ),
-          var(--bg);
-        background-attachment: fixed;
-      }
-
-      body:before {
-        content: "";
-        position: fixed;
-        inset: 0;
-        pointer-events: none;
-        z-index: -1;
-        opacity: 0.28;
-        background-image:
-          linear-gradient(rgba(99, 102, 241, 0.05) 1px, transparent 1px),
-          linear-gradient(90deg, rgba(99, 102, 241, 0.05) 1px, transparent 1px);
-        background-size: 34px 34px;
-      }
-
-      .header {
-        animation: heroIn 0.65s cubic-bezier(0.2, 0.8, 0.2, 1);
-        background: linear-gradient(135deg, #2563eb, #4f46e5, #7c3aed);
-      }
-
-      .header:after {
-        content: "";
-        position: absolute;
-        inset: -80%;
-        background: linear-gradient(
-          115deg,
-          transparent 43%,
-          rgba(255, 255, 255, 0.13) 50%,
-          transparent 57%
-        );
-        animation: shine 7s linear infinite;
-        pointer-events: none;
-      }
-
-      .stat-box,
-      .progress-card,
-      .search-box,
-      .student-list,
-      .output-section {
-        backdrop-filter: blur(14px);
-        -webkit-backdrop-filter: blur(14px);
-      }
-
-      .stat-box {
-        transition:
-          transform 0.25s,
-          box-shadow 0.25s,
-          border-color 0.25s;
-      }
-
-      .stat-box:hover {
-        transform: translateY(-4px);
-        box-shadow: 0 14px 30px rgba(37, 99, 235, 0.12);
-        border-color: rgba(37, 99, 235, 0.25);
-      }
-
-      .stat-number {
-        transition: transform 0.25s;
-      }
-
-      .stat-box:hover .stat-number {
-        transform: scale(1.08);
-      }
-
-      .progress-fill {
-        position: relative;
-        overflow: hidden;
-      }
-
-      .progress-fill:after {
-        content: "";
-        position: absolute;
-        inset: 0;
-        background: linear-gradient(
-          90deg,
-          transparent,
-          rgba(255, 255, 255, 0.45),
-          transparent
-        );
-        transform: translateX(-100%);
-        animation: progressShine 2.2s infinite;
-      }
-
-      .search-box input {
-        transition:
-          border-color 0.2s,
-          box-shadow 0.2s,
-          transform 0.2s;
-      }
-
-      .search-box input:focus {
-        border-color: var(--primary);
-        box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.11);
-        transform: translateY(-1px);
-      }
-
-      .student {
-        animation: rowIn 0.38s both;
-        transition:
-          background 0.2s,
-          transform 0.2s,
-          box-shadow 0.2s;
-      }
-
-      .student:hover {
-        background: rgba(37, 99, 235, 0.055);
-        transform: translateX(3px);
-      }
-
-      .student.present {
-        box-shadow: inset 3px 0 0 var(--success);
-      }
-
-      .check-area input {
-        transition:
-          transform 0.2s,
-          box-shadow 0.2s;
-      }
-
-      .check-area input:hover {
-        transform: scale(1.08);
-      }
-
-      .check-area input:checked {
-        animation: checkGlow 0.45s ease;
-      }
-
-      .quick-btn,
-      .action-btn,
-      .export-btn,
-      .filter-btn,
-      .copy-btn {
-        transition:
-          transform 0.18s,
-          box-shadow 0.18s,
-          filter 0.18s;
-      }
-
-      .quick-btn:hover,
-      .action-btn:hover,
-      .export-btn:hover,
-      .filter-btn:hover,
-      .copy-btn:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 8px 18px rgba(0, 0, 0, 0.09);
-        filter: brightness(1.03);
-      }
-
-      .quick-btn:active,
-      .action-btn:active,
-      .export-btn:active,
-      .filter-btn:active,
-      .copy-btn:active {
-        transform: scale(0.96);
-      }
-
-      .student-list {
-        animation: fadeUp 0.55s 0.08s both;
-      }
-
-      .output-section {
-        animation: fadeUp 0.55s 0.15s both;
-      }
-
-      .theme-btn {
-        transition:
-          transform 0.25s,
-          background 0.25s;
-      }
-
-      .theme-btn:hover {
-        transform: rotate(18deg) scale(1.08);
-        background: rgba(255, 255, 255, 0.23);
-      }
-
-      @keyframes heroIn {
-        from {
-          opacity: 0;
-          transform: translateY(-18px) scale(0.98);
-        }
-
-        to {
-          opacity: 1;
-          transform: none;
-        }
-      }
-
-      @keyframes fadeUp {
-        from {
-          opacity: 0;
-          transform: translateY(14px);
-        }
-
-        to {
-          opacity: 1;
-          transform: none;
-        }
-      }
-
-      @keyframes rowIn {
-        from {
-          opacity: 0;
-          transform: translateY(7px);
-        }
-
-        to {
-          opacity: 1;
-          transform: none;
-        }
-      }
-
-      @keyframes shine {
-        0% {
-          transform: translateX(-35%);
-        }
-
-        100% {
-          transform: translateX(35%);
-        }
-      }
-
-      @keyframes progressShine {
-        0%,
-        35% {
-          transform: translateX(-100%);
-        }
-
-        65%,
-        100% {
-          transform: translateX(100%);
-        }
-      }
-
-      @keyframes checkGlow {
-        0% {
-          transform: scale(0.75);
-          box-shadow: 0 0 0 rgba(22, 163, 74, 0);
-        }
-
-        55% {
-          transform: scale(1.15);
-          box-shadow: 0 0 22px rgba(22, 163, 74, 0.38);
-        }
-
-        100% {
-          transform: scale(1);
-        }
-      }
-
-      @media (prefers-reduced-motion: reduce) {
-        *,
-        *:before,
-        *:after {
-          animation-duration: 0.01ms !important;
-          transition-duration: 0.01ms !important;
-        }
-      }
-    </style>
-
-    <style id="smooth-mobile-upgrade">
-      html {
-        scroll-behavior: smooth;
-      }
-
-      body {
-        -webkit-overflow-scrolling: touch;
-      }
-
-      @media (max-width: 600px) {
-        body {
-          padding: 0 7px 14px;
-          overflow-x: hidden;
-          overscroll-behavior-x: none;
-        }
-
-        .top-section {
-          padding: 6px 7px 0;
-          box-shadow: 0 5px 18px rgba(0, 0, 0, 0.07);
-        }
-
-        .header {
-          padding: 10px 12px;
-          margin-bottom: 6px;
-          border-radius: 13px;
-          box-shadow: 0 7px 18px rgba(37, 99, 235, 0.15);
-        }
-
-        .header-top {
-          margin-bottom: 4px;
-        }
-
-        .header h1 {
-          font-size: 17px;
-          line-height: 1.15;
-        }
-
-        .header p {
-          font-size: 9px;
-          margin-top: 2px;
-        }
-
-        .date-text {
-          font-size: 8px;
-          margin-top: 2px;
-        }
-
-        .theme-btn {
-          width: 31px;
-          height: 31px;
-          font-size: 14px;
-        }
-
-        .date-selector {
-          margin-top: 6px;
-          gap: 5px;
-        }
-
-        .date-selector button {
-          width: 27px;
-          height: 27px;
-          border-radius: 8px;
-          font-size: 15px;
-        }
-
-        .date-selector input {
-          height: 27px;
-          border-radius: 8px;
-          font-size: 10px;
-        }
-
-        .stats {
-          gap: 5px;
-          margin-bottom: 5px;
-        }
-
-        .stat-box {
-          padding: 6px 4px;
-          border-radius: 10px;
-        }
-
-        .stat-number {
-          font-size: 18px;
-        }
-
-        .stat-label {
-          font-size: 7px;
-          margin-top: 2px;
-        }
-
-        .progress-card {
-          padding: 7px 9px;
-          margin-bottom: 5px;
-          border-radius: 10px;
-        }
-
-        .progress-top {
-          font-size: 9px;
-          margin-bottom: 5px;
-        }
-
-        .progress-bar {
-          height: 5px;
-        }
-
-        .search-box {
-          padding: 5px;
-          margin-bottom: 5px;
-          border-radius: 10px;
-        }
-
-        .search-box input {
-          height: 34px;
-          border-radius: 8px;
-          font-size: 11px;
-          padding-left: 35px;
-        }
-
-        .search-icon {
-          left: 10px;
-          font-size: 14px;
-        }
-
-        .filters {
-          gap: 5px;
-          margin-bottom: 5px;
-        }
-
-        .filter-btn {
-          padding: 5px 9px;
-          font-size: 9px;
-        }
-
-        .student-list {
-          margin-top: calc(var(--top-height, 330px) + 2px);
-          border-radius: 12px;
-          box-shadow: 0 5px 16px rgba(0, 0, 0, 0.04);
-        }
-
-        .list-header,
-        .student {
-          grid-template-columns: 25px 48px 1fr 48px;
-        }
-
-        .list-header {
-          padding: 9px 8px;
-          font-size: 8px;
-        }
-
-        .student {
-          padding: 10px 8px;
-          min-height: 58px;
-          transform: none !important;
-          animation: none !important;
-          transition: background-color 0.16s ease;
-        }
-
-        .student:hover {
-          transform: none;
-          background: inherit;
-        }
-
-        .student.present {
-          background: rgba(22, 163, 74, 0.07);
-        }
-
-        .serial {
-          font-size: 9px;
-        }
-
-        .student-id {
-          font-size: 12px;
-        }
-
-        .student-name {
-          font-size: 11px;
-        }
-
-        .status-text {
-          font-size: 7px;
-        }
-
-        .check-area input {
-          width: 24px;
-          height: 24px;
-          transition:
-            transform 0.12s ease,
-            background-color 0.15s ease,
-            box-shadow 0.15s ease;
-        }
-
-        .check-area input:active {
-          transform: scale(0.9);
-        }
-
-        .quick-actions {
-          margin-bottom: 7px;
-        }
-
-        .quick-btn,
-        .export-btn {
-          padding: 8px 3px;
-          font-size: 8px;
-        }
-
-        .actions {
-          margin-bottom: 9px;
-        }
-
-        .action-btn {
-          padding: 9px 5px;
-          font-size: 9px;
-        }
-
-        .export-actions {
-          margin-bottom: 9px;
-        }
-
-        .output-section {
-          padding: 10px;
-          border-radius: 12px;
-        }
-
-        .output-title h2 {
-          font-size: 12px;
-        }
-
-        .copy-btn {
-          padding: 6px 9px;
-          font-size: 9px;
-        }
-
-        .output-section textarea {
-          min-height: 135px;
-          font-size: 13px;
-        }
-      }
-    </style>
-
-    <style id="readability-144hz-upgrade">
-      /* ===== READABILITY + 120/144/165Hz FRIENDLY MOTION ===== */
-      @media (max-width: 600px) {
-        .header h1 {
-          font-size: 19px;
-        }
-
-        .header p {
-          font-size: 10px;
-        }
-
-        .date-text {
-          font-size: 9px;
-        }
-
-        .stat-number {
-          font-size: 20px;
-        }
-
-        .stat-label {
-          font-size: 8px;
-        }
-
-        .progress-top {
-          font-size: 10px;
-        }
-
-        .search-box input {
-          font-size: 12px;
-          height: 36px;
-        }
-
-        .filter-btn {
-          font-size: 10px;
-          padding: 6px 10px;
-        }
-
-        .list-header {
-          font-size: 9px;
-          padding: 10px 8px;
-        }
-
-        .student {
-          padding: 11px 8px;
-          min-height: 62px;
-        }
-
-        .serial {
-          font-size: 10px;
-        }
-
-        .student-id {
-          font-size: 13px;
-        }
-
-        .student-name {
-          font-size: 12px;
-        }
-
-        .status-text {
-          font-size: 8px;
-        }
-
-        .check-area input {
-          width: 26px;
-          height: 26px;
-        }
-
-        .quick-btn,
-        .export-btn {
-          font-size: 9px;
-        }
-
-        .action-btn {
-          font-size: 10px;
-        }
-
-        .output-title h2 {
-          font-size: 13px;
-        }
-
-        textarea {
-          font-size: 14px;
-        }
-      }
-
-      /* Do not animate every existing checkbox when the list re-renders.
-   Only the checkbox that was actually changed gets the pop/glow. */
-      .check-area input.attendance-just-changed {
-        animation: attendanceCheckPop 0.22s cubic-bezier(0.2, 0.9, 0.25, 1) both;
-      }
-
-      @keyframes attendanceCheckPop {
-        0% {
-          transform: scale(0.78);
-          box-shadow: 0 0 0 rgba(22, 163, 74, 0);
-        }
-
-        55% {
-          transform: scale(1.14);
-          box-shadow: 0 0 14px rgba(22, 163, 74, 0.34);
-        }
-
-        100% {
-          transform: scale(1);
-          box-shadow: 0 0 0 rgba(22, 163, 74, 0);
-        }
-      }
-
-      /* Keep scrolling compositor-friendly on high refresh-rate screens. */
-      .student-list,
-      .student,
-      .check-area input {
-        -webkit-tap-highlight-color: transparent;
-      }
-
-      .student {
-        contain: layout paint;
-      }
-
-      @media (min-resolution: 120dpi) {
-        .student {
-          transition: background-color 0.12s linear;
-        }
-
-        .check-area input {
-          transition:
-            transform 0.12s linear,
-            background-color 0.12s linear,
-            box-shadow 0.12s linear;
-        }
-      }
-    </style>
-
-    <style id="final-modern">
-      .header {
-        padding: 18px 20px;
-        margin-bottom: 10px
-      }
-
-      .header h1 {
-        font-size: 25px
-      }
-
-      .header p {
-        font-size: 11px;
-        margin-top: 2px
-      }
-
-      .live-summary {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-top: 13px;
-        font-size: 12px
-      }
-
-      .live-summary>div {
-        display: flex;
-        align-items: center;
-        gap: 7px;
-        opacity: .9
-      }
-
-      .live-summary strong {
-        font-size: 13px
-      }
-
-      .live-dot {
-        width: 8px;
-        height: 8px;
-        border-radius: 50%;
-        background: #4ade80;
-        box-shadow: 0 0 0 4px rgba(74, 222, 128, .14);
-        animation: lp 1.8s infinite
-      }
-
-      .header-progress {
-        height: 7px;
-        background: rgba(255, 255, 255, .18);
-        border-radius: 20px;
-        overflow: hidden;
-        margin-top: 9px
-      }
-
-      .header-progress-fill {
-        height: 100%;
-        width: 0;
-        border-radius: 20px;
-        background: #fff;
-        transition: width .25s ease
-      }
-
-      .header-percentage {
-        text-align: right;
-        font-size: 10px;
-        font-weight: 800;
-        margin-top: 4px
-      }
-
-      .date-display {
-        flex: 1;
-        height: 36px;
-        border-radius: 10px;
-        background: rgba(255, 255, 255, .15);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 12px;
-        font-weight: 700
-      }
-
-      .date-selector input {
-        position: absolute;
-        width: 1px;
-        height: 1px;
-        opacity: 0;
-        pointer-events: none
-      }
-
-      .compact-actions {
-        display: grid;
-        grid-template-columns: 1fr 1fr 1fr;
-        gap: 8px;
-        margin-bottom: 9px
-      }
-
-      .compact-btn {
-        border: 0;
-        border-radius: 13px;
-        padding: 12px 7px;
-        font-size: 12px;
-        font-weight: 800
-      }
-
-      .mark-btn {
-        background: var(--primary);
-        color: #fff
-      }
-
-      .copy-btn-main {
-        background: rgba(22, 163, 74, .11);
-        color: var(--success)
-      }
-
-      .reset-btn {
-        background: rgba(220, 38, 38, .08);
-        color: var(--danger)
-      }
-
-      .secondary-actions {
-        position: relative;
-        display: grid;
-        grid-template-columns: 1.4fr .8fr .8fr;
-        gap: 8px;
-        margin-bottom: 11px
-      }
-
-      .secondary-btn {
-        border: 1px solid var(--border);
-        border-radius: 11px;
-        padding: 10px 7px;
-        background: var(--card);
-        color: var(--text);
-        font-size: 11px;
-        font-weight: 800
-      }
-
-      .secondary-btn.generate-btn {
-        background: linear-gradient(135deg, var(--primary), var(--primary2));
-        color: #fff;
-        border: 0
-      }
-
-      .more-menu {
-        display: none;
-        position: absolute;
-        right: 0;
-        top: calc(100% + 7px);
-        z-index: 1000;
-        min-width: 170px;
-        padding: 6px;
-        background: var(--card);
-        border: 1px solid var(--border);
-        border-radius: 12px;
-        box-shadow: 0 14px 35px rgba(0, 0, 0, .16)
-      }
-
-      .more-menu.show {
-        display: block
-      }
-
-      .more-menu button {
-        display: block;
-        width: 100%;
-        border: 0;
-        background: transparent;
-        color: var(--text);
-        text-align: left;
-        padding: 10px;
-        border-radius: 8px;
-        font-size: 11px;
-        font-weight: 700
-      }
-
-      .compact-output {
-        padding: 14px
-      }
-
-      .output-count {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        min-width: 24px;
-        height: 22px;
-        padding: 0 7px;
-        border-radius: 12px;
-        background: rgba(37, 99, 235, .1);
-        color: var(--primary);
-        font-size: 10px
-      }
-
-      .output-box {
-        min-height: 65px;
-        max-height: 230px;
-        overflow: auto;
-        margin-top: 9px;
-        border: 1px solid var(--border);
-        border-radius: 11px;
-        padding: 10px 13px;
-        background: var(--bg)
-      }
-
-      .output-box pre {
-        margin: 0;
-        white-space: pre-wrap;
-        font: 600 14px/1.65 ui-monospace, SFMono-Regular, Menlo, monospace;
-        color: var(--text)
-      }
-
-      .output-placeholder {
-        color: var(--muted);
-        font-size: 12px;
-        padding: 5px 0
-      }
-
-      @keyframes lp {
-        50% {
-          box-shadow: 0 0 0 6px rgba(74, 222, 128, .04)
-        }
-      }
-
-      @media(max-width:600px) {
-        .header {
-          padding: 12px 13px;
-          margin-bottom: 6px
-        }
-
-        .header h1 {
-          font-size: 19px
-        }
-
-        .header p {
-          font-size: 10px
-        }
-
-        .live-summary {
-          margin-top: 8px;
-          font-size: 10px
-        }
-
-        .live-summary strong {
-          font-size: 11px
-        }
-
-        .header-progress {
-          height: 5px;
-          margin-top: 7px
-        }
-
-        .header-percentage {
-          font-size: 8px
-        }
-
-        .date-selector {
-          margin-top: 7px
-        }
-
-        .date-display {
-          height: 29px;
-          font-size: 10px
-        }
-
-        .date-selector button {
-          width: 29px;
-          height: 29px
-        }
-
-        .compact-actions {
-          gap: 6px;
-          margin-bottom: 7px
-        }
-
-        .compact-btn {
-          padding: 10px 4px;
-          font-size: 10px;
-          border-radius: 10px
-        }
-
-        .secondary-actions {
-          gap: 6px;
-          margin-bottom: 8px
-        }
-
-        .secondary-btn {
-          padding: 9px 4px;
-          font-size: 9px
-        }
-
-        .more-menu {
-          min-width: 155px
-        }
-
-        .more-menu button {
-          font-size: 10px;
-          padding: 9px
-        }
-
-        .compact-output {
-          padding: 11px
-        }
-
-        .output-box {
-          min-height: 55px;
-          max-height: 180px;
-          padding: 8px 10px
-        }
-
-        .output-box pre {
-          font-size: 13px;
-          line-height: 1.55
-        }
-
-        .output-placeholder {
-          font-size: 10px
-        }
-      }
-      }
-    </style>
-
-    <style id="clean-footer-fix">
-      .secondary-actions {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 8px;
-        position: relative;
-        margin-bottom: 10px;
-      }
-
-      .reset-footer-btn {
-        background: rgba(220, 38, 38, 0.08) !important;
-        color: var(--danger) !important;
-        border-color: rgba(220, 38, 38, 0.12) !important;
-      }
-
-      .more-btn {
-        background: var(--card) !important;
-      }
-
-      @media (max-width: 600px) {
-        .secondary-actions {
-          grid-template-columns: 1fr 1fr;
-          gap: 7px;
-          margin-bottom: 8px;
-        }
-
-        .secondary-btn {
-          padding: 10px 5px;
-          font-size: 10px;
-        }
-      }
-    </style>
-
-    <style id="output-visibility-fix">
-      .output-box {
-        display: block !important;
-        visibility: visible !important;
-      }
-
-      .output-box pre#outputText {
-        display: block;
-        margin: 0;
-        min-height: 0;
-        white-space: pre-wrap;
-      }
-
-      .output-placeholder {
-        display: block;
-      }
-    </style>
-
-    <style id="final-fix-v2">
-      .header-content {
-        position: relative;
-      }
-
-      .header-top {
-        position: relative;
-        z-index: 2;
-      }
-
-      .header h1 {
-        line-height: 1.12;
-        margin-bottom: 3px;
-      }
-
-      .header p {
-        line-height: 1.2;
-        margin: 0 0 3px;
-      }
-
-      .date-text {
-        line-height: 1.2;
-      }
-
-      .live-summary {
-        margin-top: 11px;
-        position: relative;
-        z-index: 2;
-      }
-
-      .header-progress {
-        position: relative;
-        z-index: 2;
-      }
-
-      .header-percentage {
-        position: relative;
-        z-index: 2;
-      }
-
-      .date-selector {
-        position: relative;
-        z-index: 2;
-      }
-
-      .compact-output .output-box {
-        display: block !important;
-        min-height: 68px;
-        overflow-y: auto;
-      }
-
-      .compact-output #outputText {
-        display: none;
-        margin: 0;
-        padding: 0;
-        white-space: pre-wrap;
-        font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
         font-size: 14px;
-        line-height: 1.65;
-        font-weight: 700;
+        font-weight: 600;
       }
 
-      .compact-output .output-placeholder {
-        display: block;
-        font-size: 12px;
-      }
-
-      .secondary-actions {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 8px;
-        position: relative;
-        margin-bottom: 10px;
-      }
-
-      .reset-footer-btn {
-        background: rgba(220, 38, 38, 0.08) !important;
-        color: var(--danger) !important;
-        border-color: rgba(220, 38, 38, 0.12) !important;
-      }
-
-      @media (max-width: 600px) {
-        .header h1 {
-          font-size: 19px;
-        }
-
-        .header p {
-          font-size: 10px;
-        }
-
-        .date-text {
-          font-size: 9px;
-        }
-
-        .live-summary {
-          margin-top: 8px;
-        }
-
-        .compact-output #outputText {
-          font-size: 13px;
-        }
-
-        .compact-output .output-placeholder {
-          font-size: 11px;
-        }
-      }
-    </style>
-
-    <style id="checkbox-output-final-fix">
-      .check-area input.just-tapped {
-        animation: checkboxTap 0.26s cubic-bezier(0.2, 0.8, 0.2, 1);
-      }
-
-      @keyframes checkboxTap {
-        0% {
-          transform: scale(0.82);
-        }
-
-        65% {
-          transform: scale(1.1);
-        }
-
-        100% {
-          transform: scale(1);
-        }
-      }
-    </style>
-
-    <style id="output-final-visibility">
-      #outputText {
-        color: var(--text) !important;
-      }
-
-      #outputPlaceholder {
-        color: var(--muted) !important;
-      }
-
-      .output-box {
-        visibility: visible !important;
-        opacity: 1 !important;
-      }
-    </style>
-
-    <style id="sticky-footer-modern">
-      :root {
-        --footer-bg: rgba(255, 255, 255, 0.92);
-        --footer-shadow: 0 -10px 30px rgba(15, 23, 42, 0.1);
-      }
-
-      body {
-        padding-bottom: 190px;
-      }
-
+      /* ===== FIXED FOOTER ===== */
       .footer-fixed {
         position: fixed;
         left: 0;
         right: 0;
         bottom: 0;
-        z-index: 1200;
-        padding: 10px max(12px, env(safe-area-inset-left))
-          calc(10px + env(safe-area-inset-bottom))
-          max(12px, env(safe-area-inset-right));
+        z-index: 1000;
+        padding: 10px 14px calc(10px + env(safe-area-inset-bottom));
         background: var(--footer-bg);
-        backdrop-filter: blur(18px) saturate(150%);
-        -webkit-backdrop-filter: blur(18px) saturate(150%);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
         border-top: 1px solid var(--border);
         box-shadow: var(--footer-shadow);
       }
 
       .footer-fixed-inner {
-        max-width: 1100px;
-        margin: auto;
+        max-width: 860px;
+        margin: 0 auto;
+        position: relative;
       }
 
       .footer-controls {
@@ -1984,178 +567,543 @@
         margin-bottom: 8px;
       }
 
-      .footer-controls .secondary-btn {
-        min-height: 42px;
+      .action-button {
+        min-height: 40px;
+        border: 1px solid var(--border);
+        border-radius: 11px;
         font-size: 12px;
+        font-weight: 800;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        transition: transform 0.15s, background-color 0.15s, box-shadow 0.15s;
       }
 
-      .footer-output {
+      .action-button:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+      }
+
+      .action-button:active {
+        transform: scale(0.97);
+      }
+
+      .reset-btn {
+        background: var(--danger-bg);
+        color: var(--danger);
+        border-color: rgba(220, 38, 38, 0.18);
+      }
+
+      .more-btn {
+        background: var(--card);
+        color: var(--text);
+      }
+
+      /* ===== MORE DROPDOWN MENU ===== */
+      .more-menu {
+        display: none;
+        position: absolute;
+        right: 0;
+        bottom: 100%;
+        margin-bottom: 8px;
+        z-index: 1100;
+        min-width: 220px;
+        padding: 6px;
         background: var(--card);
         border: 1px solid var(--border);
         border-radius: 14px;
+        box-shadow: 0 12px 35px rgba(0, 0, 0, 0.18);
+        animation: menuPopup 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+
+      .more-menu.show {
+        display: block;
+      }
+
+      @keyframes menuPopup {
+        from {
+          opacity: 0;
+          transform: translateY(10px) scale(0.96);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0) scale(1);
+        }
+      }
+
+      .more-menu-header {
+        font-size: 10px;
+        font-weight: 800;
+        color: var(--muted);
+        text-transform: uppercase;
+        padding: 8px 10px 4px;
+        letter-spacing: 0.5px;
+      }
+
+      .more-menu button {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        width: 100%;
+        border: 0;
+        background: transparent;
+        color: var(--text);
+        text-align: left;
+        padding: 10px 12px;
+        border-radius: 9px;
+        font-size: 12px;
+        font-weight: 700;
+        transition: background-color 0.15s;
+      }
+
+      .more-menu button:hover {
+        background: var(--card-hover);
+        color: var(--primary);
+      }
+
+      .more-menu button.danger {
+        color: var(--danger);
+      }
+
+      .more-menu button.danger:hover {
+        background: var(--danger-bg);
+      }
+
+      /* ===== OUTPUT BOX ===== */
+      .footer-output {
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 13px;
         overflow: hidden;
       }
 
-      .footer-output .output-title {
-        padding: 10px 12px;
-        min-height: 45px;
+      .output-title {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 8px 12px;
+        border-bottom: 1px solid var(--border);
       }
 
-      .footer-output .output-box {
-        margin: 0;
+      .output-title h2 {
+        font-size: 12px;
+        font-weight: 800;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+
+      .output-count {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 22px;
+        height: 20px;
+        padding: 0 6px;
+        border-radius: 10px;
+        background: rgba(37, 99, 235, 0.1);
+        color: var(--primary);
+        font-size: 10px;
+        font-weight: 800;
+      }
+
+      .copy-btn {
         border: 0;
-        border-top: 1px solid var(--border);
-        border-radius: 0;
-        max-height: 110px;
-        min-height: 46px;
+        background: var(--text);
+        color: var(--card);
+        border-radius: 8px;
+        padding: 6px 14px;
+        font-size: 11px;
+        font-weight: 800;
+        transition: transform 0.15s, opacity 0.15s;
+      }
+
+      .copy-btn:hover {
+        opacity: 0.9;
+        transform: translateY(-1px);
+      }
+
+      .copy-btn:active {
+        transform: scale(0.96);
+      }
+
+      .output-box {
+        max-height: 95px;
+        min-height: 48px;
+        overflow-y: auto;
+        padding: 8px 12px;
         background: var(--bg);
       }
 
-      .footer-output .copy-btn {
-        min-width: 68px;
+      .output-box pre {
+        margin: 0;
+        white-space: pre-wrap;
+        font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+        font-size: 12px;
+        line-height: 1.5;
+        font-weight: 600;
+        color: var(--text);
       }
 
+      .output-placeholder {
+        color: var(--muted);
+        font-size: 11px;
+        padding: 4px 0;
+      }
+
+      /* ===== TOAST NOTIFICATION ===== */
+      .toast {
+        position: fixed;
+        left: 50%;
+        bottom: 30px;
+        transform: translate(-50%, 80px);
+        background: #0f172a;
+        color: #ffffff;
+        padding: 10px 18px;
+        border-radius: 12px;
+        font-size: 12px;
+        font-weight: 700;
+        z-index: 99999;
+        opacity: 0;
+        transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s ease;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        pointer-events: none;
+      }
+
+      body.dark .toast {
+        background: #1e293b;
+        color: #f8fafc;
+        border: 1px solid #334155;
+      }
+
+      .toast.show {
+        transform: translate(-50%, 0);
+        opacity: 1;
+      }
+
+      /* ===== RESPONSIVE STYLES (MOBILE) ===== */
       @media (max-width: 600px) {
         body {
-          padding-bottom: 172px;
+          padding: 12px 8px 190px;
         }
 
-        .footer-fixed {
-          padding: 7px 10px calc(7px + env(safe-area-inset-bottom));
+        .header {
+          padding: 14px 14px;
+          border-radius: 15px;
         }
 
-        .footer-controls {
-          gap: 6px;
-          margin-bottom: 6px;
+        .header h1 {
+          font-size: 18px;
         }
 
-        .footer-controls .secondary-btn {
-          min-height: 38px;
-          padding: 8px 5px;
+        .header p {
           font-size: 10px;
         }
 
-        .footer-output {
-          border-radius: 12px;
-        }
-
-        .footer-output .output-title {
-          padding: 8px 10px;
-          min-height: 40px;
-        }
-
-        .footer-output .output-box {
-          max-height: 82px;
-          min-height: 40px;
-          padding: 7px 10px;
-        }
-
-        .footer-output #outputText {
-          font-size: 12px;
-          line-height: 1.45;
-        }
-
-        .footer-output .output-placeholder {
-          font-size: 10px;
-        }
-
-        .footer-output .copy-btn {
+        .date-text {
           font-size: 9px;
-          min-width: 58px;
         }
-      }
 
-      @media (prefers-reduced-motion: no-preference) {
+        .theme-btn {
+          width: 34px;
+          height: 34px;
+          font-size: 15px;
+        }
+
+        .course-bar {
+          margin-top: 9px;
+          padding: 6px 10px;
+        }
+
+        .course-bar label {
+          font-size: 11px;
+        }
+
+        .course-bar select {
+          font-size: 11px;
+        }
+
+        .live-summary {
+          font-size: 10px;
+          margin-top: 9px;
+        }
+
+        .live-summary strong {
+          font-size: 11px;
+        }
+
+        .header-progress {
+          height: 5px;
+          margin-top: 6px;
+        }
+
+        .header-percentage {
+          font-size: 9px;
+        }
+
+        .date-selector {
+          margin-top: 9px;
+          gap: 6px;
+        }
+
+        .date-selector button {
+          width: 30px;
+          height: 30px;
+          border-radius: 8px;
+          font-size: 15px;
+        }
+
+        .date-display {
+          height: 30px;
+          font-size: 11px;
+          border-radius: 8px;
+        }
+
+        .search-box {
+          padding: 6px 8px;
+        }
+
+        .search-box input {
+          height: 36px;
+          font-size: 12px;
+          padding-left: 32px;
+        }
+
+        .search-icon {
+          left: 10px;
+          font-size: 14px;
+        }
+
+        .filter-btn {
+          padding: 6px 10px;
+          font-size: 10px;
+        }
+
+        .list-header,
+        .student {
+          grid-template-columns: 28px 50px 1fr 50px;
+          gap: 6px;
+          padding: 10px 10px;
+        }
+
+        .list-header {
+          font-size: 9px;
+        }
+
+        .serial {
+          font-size: 10px;
+        }
+
+        .student-id {
+          font-size: 12px;
+        }
+
+        .student-name {
+          font-size: 11px;
+        }
+
+        .status-text {
+          font-size: 8px;
+        }
+
+        .check-area input[type="checkbox"] {
+          width: 24px;
+          height: 24px;
+        }
+
         .footer-fixed {
-          transition:
-            box-shadow 0.2s ease,
-            background 0.2s ease;
+          padding: 8px 10px calc(8px + env(safe-area-inset-bottom));
+        }
+
+        .action-button {
+          min-height: 36px;
+          font-size: 11px;
+        }
+
+        .output-box {
+          max-height: 75px;
+          min-height: 42px;
+          padding: 6px 10px;
+        }
+
+        .output-box pre {
+          font-size: 11px;
         }
       }
-    </style>
 
-    <style id="footer-menu-fix">
-      .footer-fixed .more-menu {
-        position: absolute;
-        right: 10px;
-        bottom: 58px;
-        top: auto;
-        z-index: 1300;
+      /* ===== PRINT STYLES ===== */
+      @media print {
+        body {
+          background: #ffffff !important;
+          color: #000000 !important;
+          padding: 0 !important;
+        }
+
+        .header,
+        .search-box,
+        .filters,
+        .footer-fixed,
+        .more-menu,
+        .toast {
+          display: none !important;
+        }
+
+        .print-sheet-header {
+          display: block !important;
+          margin-bottom: 20px;
+          padding-bottom: 12px;
+          border-bottom: 2px solid #000;
+        }
+
+        .student-list {
+          border: 1px solid #000 !important;
+          box-shadow: none !important;
+          margin-bottom: 0 !important;
+        }
+
+        .list-header {
+          background: #eee !important;
+          color: #000 !important;
+          border-bottom: 2px solid #000 !important;
+        }
+
+        .student {
+          border-bottom: 1px solid #ccc !important;
+          color: #000 !important;
+          break-inside: avoid;
+        }
+
+        .student.present {
+          background: #f0fdf4 !important;
+          -webkit-print-color-adjust: exact;
+          print-color-adjust: exact;
+        }
+
+        .check-area {
+          font-weight: 800;
+        }
+
+        .check-area input {
+          display: none !important;
+        }
+
+        .check-area::after {
+          content: "—";
+        }
+
+        .student.present .check-area::after {
+          content: "✓ PRESENT";
+          color: #16a34a;
+        }
       }
     </style>
   </head>
 
   <body>
     <div class="container">
-      <div class="top-section" id="topSection">
-        <div class="header">
-          <div class="header-content">
-            <div class="header-top">
-              <div>
-                <h1>Loopify 💕</h1>
-                <p>By Momenur Rashid</p>
-                <div class="date-text" id="headerDate"></div>
-              </div>
-              <button
-                class="theme-btn"
-                onclick="toggleTheme()"
-                id="themeButton"
-              >
-                🌙
-              </button>
-            </div>
-            <div class="live-summary">
-              <div>
-                <span class="live-dot"></span
-                ><span id="attendanceStatus">Ready to Take Attendance</span>
-              </div>
-              <strong
-                ><span id="headerPresent">0</span> /
-                <span id="headerTotal">46</span> Present</strong
-              >
-            </div>
-            <div class="header-progress">
-              <div class="header-progress-fill" id="headerProgressFill"></div>
-            </div>
-            <div class="header-percentage" id="headerPercentage">0%</div>
-            <div class="date-selector">
-              <button onclick="changeDate(-1)">‹</button>
-              <div class="date-display">📅 <span id="dateDisplay"></span></div>
-              <button onclick="changeDate(1)">›</button
-              ><input
-                type="date"
-                id="datePicker"
-                onchange="loadSelectedDate()"
-              />
-            </div>
-          </div>
-        </div>
-
-        <div class="search-box">
-          <div class="search-wrapper">
-            <span class="search-icon">🔍</span>
-            <input
-              type="text"
-              id="searchInput"
-              placeholder="Search by ID or student name..."
-              oninput="searchStudents()"
-            />
-          </div>
-        </div>
-        <div class="filters">
-          <button class="filter-btn active" onclick="setFilter('all', this)">
-            All
-          </button>
-          <button class="filter-btn" onclick="setFilter('present', this)">
-            🟢 Present
-          </button>
-          <button class="filter-btn" onclick="setFilter('absent', this)">
-            🔴 Absent
-          </button>
+      <!-- Print Only Header -->
+      <div class="print-sheet-header" id="printSheetHeader" style="display: none;">
+        <h2 style="font-size: 20px; margin-bottom: 4px;">Attendance Sheet - Loopify</h2>
+        <div style="font-size: 13px; line-height: 1.6;">
+          <div><strong>Course:</strong> <span id="printCourseName"></span></div>
+          <div><strong>Date:</strong> <span id="printDateName"></span></div>
+          <div><strong>Summary:</strong> <span id="printSummary"></span></div>
         </div>
       </div>
 
-      <div class="student-list">
+      <!-- Header Section -->
+      <header class="header">
+        <div class="header-content">
+          <div class="header-top">
+            <div>
+              <h1>Loopify 💕</h1>
+              <p>By Momenur Rashid</p>
+              <div class="date-text" id="headerDate"></div>
+            </div>
+            <button
+              class="theme-btn"
+              type="button"
+              onclick="toggleTheme()"
+              id="themeButton"
+              title="Toggle Dark/Light Mode"
+              aria-label="Toggle Theme"
+            >
+              🌙
+            </button>
+          </div>
+
+          <!-- Course Selector -->
+          <div class="course-bar">
+            <label for="courseSelect">📚 Course:</label>
+            <select id="courseSelect" onchange="onCourseChange()" aria-label="Select Course">
+              <!-- Courses populated dynamically via JavaScript -->
+            </select>
+          </div>
+
+          <!-- Live Summary -->
+          <div class="live-summary">
+            <div class="live-summary-status">
+              <span class="live-dot"></span>
+              <span id="attendanceStatus">Ready to Take Attendance</span>
+            </div>
+            <strong>
+              <span id="headerPresent">0</span> /
+              <span id="headerTotal">46</span> Present
+            </strong>
+          </div>
+
+          <!-- Progress Bar -->
+          <div class="header-progress">
+            <div class="header-progress-fill" id="headerProgressFill"></div>
+          </div>
+          <div class="header-percentage" id="headerPercentage">0%</div>
+
+          <!-- Date Selector -->
+          <div class="date-selector">
+            <button type="button" onclick="changeDate(-1)" aria-label="Previous Day" title="Previous Day">‹</button>
+            <div class="date-display" onclick="openDatePicker()" title="Click to pick specific date" id="dateDisplayContainer">
+              📅 <span id="dateDisplay"></span>
+            </div>
+            <button type="button" onclick="changeDate(1)" aria-label="Next Day" title="Next Day">›</button>
+            <input
+              type="date"
+              id="datePicker"
+              onchange="loadSelectedDate()"
+              aria-label="Select Date"
+            />
+          </div>
+        </div>
+      </header>
+
+      <!-- Search & Filters -->
+      <section class="search-box">
+        <div class="search-wrapper">
+          <span class="search-icon">🔍</span>
+          <input
+            type="text"
+            id="searchInput"
+            placeholder="Search by ID or student name..."
+            oninput="searchStudents()"
+            aria-label="Search students"
+          />
+        </div>
+      </section>
+
+      <nav class="filters" aria-label="Filter students">
+        <button class="filter-btn active" type="button" onclick="setFilter('all', this)">
+          All
+        </button>
+        <button class="filter-btn" type="button" onclick="setFilter('present', this)">
+          🟢 Present
+        </button>
+        <button class="filter-btn" type="button" onclick="setFilter('absent', this)">
+          🔴 Absent
+        </button>
+      </nav>
+
+      <!-- Student List -->
+      <main class="student-list">
         <div class="list-header">
           <div>#</div>
           <div>ID</div>
@@ -2163,44 +1111,92 @@
           <div style="text-align: center">Status</div>
         </div>
         <div id="studentList"></div>
-      </div>
+      </main>
 
-      <div class="footer-fixed">
+      <!-- Fixed Bottom Footer Controls -->
+      <footer class="footer-fixed">
         <div class="footer-fixed-inner">
           <div class="footer-controls">
-            <button class="secondary-btn reset-footer-btn" onclick="clearAll()">
+            <button class="action-button reset-btn" type="button" onclick="clearAll()">
               ↻ Reset
             </button>
-            <button class="secondary-btn more-btn" onclick="toggleMoreMenu()">
+            <button
+              class="action-button more-btn"
+              type="button"
+              id="moreBtn"
+              onclick="toggleMoreMenu(event)"
+            >
               ⋮ More
             </button>
           </div>
 
+          <!-- More Options Dropdown Menu -->
+          <div class="more-menu" id="moreMenu">
+            <div class="more-menu-header">Attendance Options</div>
+            <button type="button" onclick="copyAbsentList()">
+              📋 Copy Absent List
+            </button>
+            <button type="button" onclick="copyRawPresentIDs()">
+              🔢 Copy Present (IDs Only)
+            </button>
+            <button type="button" onclick="markAllPresent()">
+              ✓ Mark All Present
+            </button>
+            <button type="button" onclick="undoLastAction()">
+              ↩ Undo Last Action
+            </button>
+            <button type="button" onclick="window.print()">
+              🖨️ Print Sheet
+            </button>
+            <div class="more-menu-header">Export Data</div>
+            <button type="button" onclick="exportTXT()">
+              📄 Export TXT
+            </button>
+            <button type="button" onclick="exportCSV()">
+              📊 Export CSV
+            </button>
+          </div>
+
+          <!-- Output Preview Section -->
           <div class="footer-output">
-            <div class="output-section compact-output">
-              <div class="output-title">
-                <h2>
-                  📋 Present IDs
-                  <span class="output-count" id="outputCount">0</span>
-                </h2>
-                <button class="copy-btn" onclick="copyResult()">COPY</button>
-              </div>
-              <div class="output-box" id="outputBox">
-                <div class="output-placeholder" id="outputPlaceholder">
-                  Present IDs will appear here
-                </div>
-                <pre id="outputText"></pre>
-              </div>
-              <textarea id="output" readonly hidden></textarea>
+            <div class="output-title">
+              <h2>
+                📋 Present Message
+                <span class="output-count" id="outputCount">0</span>
+              </h2>
+              <button class="copy-btn" type="button" onclick="copyResult()">
+                COPY
+              </button>
             </div>
+            <div class="output-box" id="outputBox">
+              <div class="output-placeholder" id="outputPlaceholder">
+                Mark students present to generate message
+              </div>
+              <pre id="outputText" style="display: none;"></pre>
+            </div>
+            <textarea id="output" readonly hidden></textarea>
           </div>
         </div>
-      </div>
+      </footer>
     </div>
 
-    <div class="toast" id="toast"></div>
+    <!-- Toast Notification -->
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
     <script>
+      // ===== HARDCODED COURSES LIST =====
+      const courses = [
+        "Parallel Processing",
+        "Parallel Processing Lab",
+        "Cryptography",
+        "Cryptography Lab",
+        "Big Data",
+        "Big Data Lab",
+        "Machine Learning",
+        "Machine Learning Lab",
+      ];
+
+      // ===== STUDENTS LIST =====
       const students = [
         ["231311002", "UMME HABIBA"],
         ["231311003", "MD. WAHID OBAER SAJID"],
@@ -2224,7 +1220,7 @@
         ["231311027", "MST. ARIFA AKHTAR CHANDNI"],
         ["231311032", "REZWANA KARIM"],
         ["231311034", "MD KARIM"],
-        ["231311035", "MST.KHADIZA ALAM MOMI"],
+        ["231311035", "MST. KHADIZA ALAM MOMI"],
         ["231311036", "MD. HASIB NADIM"],
         ["231311038", "MD. NAZMUL HASAN"],
         ["231311040", "MD. FAHIM AKHTAR"],
@@ -2250,75 +1246,161 @@
         ["231311128", "MAHFUJUR RAHMAN SHANTO"],
       ].map(([id, name]) => ({ id, name }));
 
-      let attendance = {},
-        currentFilter = "all",
-        currentDate = getTodayDate(),
-        previousAttendance = null,
-        animateCheckboxId = null;
-      const studentList = document.getElementById("studentList"),
-        presentCount = document.getElementById("presentCount"),
-        absentCount = document.getElementById("absentCount"),
-        totalCount = document.getElementById("totalCount"),
-        percentage = document.getElementById("percentage"),
-        progressFill = document.getElementById("progressFill"),
-        output = document.getElementById("output"),
-        datePicker = document.getElementById("datePicker");
+      // ===== STATE =====
+      let attendance = {};
+      let currentFilter = "all";
+      let currentDate = getTodayDate();
+      let currentCourse = getSavedCourse();
+      let previousAttendance = null;
+      let animateCheckboxId = null;
+
+      // DOM Elements
+      const studentList = document.getElementById("studentList");
+      const datePicker = document.getElementById("datePicker");
+      const output = document.getElementById("output");
+      const courseSelect = document.getElementById("courseSelect");
+
+      // ===== DATE HELPERS (TIMEZONE SAFE) =====
+      function formatDateLocal(d) {
+        const y = d.getFullYear();
+        const m = String(d.getMonth() + 1).padStart(2, "0");
+        const day = String(d.getDate()).padStart(2, "0");
+        return `${y}-${m}-${day}`;
+      }
+
+      function parseDateLocal(str) {
+        if (!str) return new Date();
+        const parts = str.split("-").map(Number);
+        return new Date(parts[0], parts[1] - 1, parts[2]);
+      }
 
       function getTodayDate() {
-        const d = new Date();
-        return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+        return formatDateLocal(new Date());
       }
-      function formatDate(s) {
-        return new Date(s + "T00:00:00").toLocaleDateString("en-US", {
+
+      function formatFullDate(str) {
+        const d = parseDateLocal(str);
+        return d.toLocaleDateString("en-US", {
           weekday: "long",
           day: "numeric",
           month: "long",
           year: "numeric",
         });
       }
-      function storageKey() {
-        return "attendance_" + currentDate;
-      }
-      function saveAttendance() {
-        localStorage.setItem(storageKey(), JSON.stringify(attendance));
-      }
-      function loadAttendance() {
-        try {
-          attendance = JSON.parse(localStorage.getItem(storageKey()) || "{}");
-        } catch {
-          attendance = {};
-        }
-      }
-      function updateDateDisplay() {
-        datePicker.value = currentDate;
-        document.getElementById("headerDate").textContent =
-          formatDate(currentDate);
-        document.getElementById("dateDisplay").textContent = new Date(
-          currentDate + "T00:00:00",
-        ).toLocaleDateString("en-US", {
+
+      function formatDisplayDate(str) {
+        const d = parseDateLocal(str);
+        return d.toLocaleDateString("en-US", {
           day: "2-digit",
           month: "short",
           year: "numeric",
         });
       }
-      function loadSelectedDate() {
-        currentDate = datePicker.value || getTodayDate();
+
+      // ===== STORAGE HELPERS =====
+      function getSavedCourse() {
+        try {
+          const saved = localStorage.getItem("attendance_course");
+          if (saved && courses.includes(saved)) {
+            return saved;
+          }
+        } catch (e) {}
+        return courses[0];
+      }
+
+      function storageKey() {
+        return `attendance_${currentDate}_${currentCourse.replace(/\s+/g, "_")}`;
+      }
+
+      function saveAttendance() {
+        try {
+          localStorage.setItem(storageKey(), JSON.stringify(attendance));
+        } catch (e) {
+          console.error("Failed to save to localStorage", e);
+        }
+      }
+
+      function loadAttendance() {
+        try {
+          // Check for course-specific key first, then fallback to general date key
+          const key = storageKey();
+          const saved =
+            localStorage.getItem(key) ||
+            localStorage.getItem(`attendance_${currentDate}`);
+          attendance = saved ? JSON.parse(saved) : {};
+        } catch (e) {
+          console.error("Failed to load from localStorage", e);
+          attendance = {};
+        }
+      }
+
+      // ===== COURSE MANAGEMENT =====
+      function populateCourses() {
+        if (!courseSelect) return;
+        courseSelect.innerHTML = "";
+        courses.forEach((c) => {
+          const opt = document.createElement("option");
+          opt.value = c;
+          opt.textContent = c;
+          if (c === currentCourse) opt.selected = true;
+          courseSelect.appendChild(opt);
+        });
+      }
+
+      function onCourseChange() {
+        currentCourse = courseSelect.value;
+        try {
+          localStorage.setItem("attendance_course", currentCourse);
+        } catch (e) {}
+
         loadAttendance();
         previousAttendance = null;
-        output.value = "";
+        renderStudents();
+        updateStats();
+        updateOutputLive();
+        showToast(`Course: ${currentCourse}`);
+      }
+
+      // ===== DATE MANAGEMENT =====
+      function updateDateDisplay() {
+        if (datePicker) datePicker.value = currentDate;
+        const headerDate = document.getElementById("headerDate");
+        const dateDisplay = document.getElementById("dateDisplay");
+        if (headerDate) headerDate.textContent = formatFullDate(currentDate);
+        if (dateDisplay) dateDisplay.textContent = formatDisplayDate(currentDate);
+      }
+
+      function loadSelectedDate() {
+        currentDate = (datePicker && datePicker.value) ? datePicker.value : getTodayDate();
+        loadAttendance();
+        previousAttendance = null;
+        if (output) output.value = "";
         updateDateDisplay();
         renderStudents();
         updateStats();
         updateOutputLive();
-        showToast("Attendance loaded");
+        showToast("Attendance loaded for selected date");
       }
+
       function changeDate(days) {
-        const d = new Date(currentDate + "T00:00:00");
+        const d = parseDateLocal(currentDate);
         d.setDate(d.getDate() + days);
-        currentDate = d.toISOString().split("T")[0];
+        currentDate = formatDateLocal(d);
         loadSelectedDate();
       }
 
+      function openDatePicker() {
+        if (!datePicker) return;
+        if (typeof datePicker.showPicker === "function") {
+          try {
+            datePicker.showPicker();
+            return;
+          } catch (e) {}
+        }
+        datePicker.click();
+      }
+
+      // ===== ATTENDANCE TOGGLE =====
       function setAttendance(id, checked) {
         previousAttendance = JSON.stringify(attendance);
         animateCheckboxId = id;
@@ -2339,23 +1421,23 @@
 
         if (attendance[id]) {
           delete attendance[id];
-          showToast("Student marked Absent");
+          showToast("Marked Absent");
         } else {
           attendance[id] = true;
-          showToast("✓ Student marked Present");
+          showToast("✓ Marked Present");
         }
 
         saveAttendance();
         renderStudents();
       }
 
+      // ===== STUDENT RENDERING =====
       function renderStudents() {
+        if (!studentList) return;
         studentList.innerHTML = "";
 
-        const search = document
-          .getElementById("searchInput")
-          .value.toLowerCase()
-          .trim();
+        const searchInput = document.getElementById("searchInput");
+        const search = searchInput ? searchInput.value.toLowerCase().trim() : "";
 
         const filtered = students.filter((s) => {
           const matchSearch =
@@ -2363,45 +1445,45 @@
             s.id.slice(-3).includes(search) ||
             s.name.toLowerCase().includes(search);
 
-          const present = !!attendance[s.id];
+          const isPresent = !!attendance[s.id];
 
           return (
             matchSearch &&
             (currentFilter === "all" ||
-              (currentFilter === "present" && present) ||
-              (currentFilter === "absent" && !present))
+              (currentFilter === "present" && isPresent) ||
+              (currentFilter === "absent" && !isPresent))
           );
         });
 
         if (!filtered.length) {
           studentList.innerHTML =
-            '<div class="empty-message">🔍<br><br>No student found.</div>';
+            '<div class="empty-message">🔍 No students found matching your criteria.</div>';
           updateStats();
-          setTopHeight();
           return;
         }
 
-        filtered.forEach((s, index) => {
-          const present = !!attendance[s.id];
+        filtered.forEach((s) => {
+          const isPresent = !!attendance[s.id];
           const row = document.createElement("div");
-
-          row.className = "student" + (present ? " present" : "");
+          row.className = "student" + (isPresent ? " present" : "");
 
           row.innerHTML = `
-      <div class="serial">${String(students.indexOf(s) + 1).padStart(2, "0")}</div>
-      <div class="student-id">${s.id.slice(-3)}</div>
-      <div>
-        <div class="student-name">${s.name}</div>
-        <div class="status-text">${present ? "● PRESENT" : "○ ABSENT"}</div>
-      </div>
-      <div class="check-area">
-        <input type="checkbox" ${present ? "checked" : ""} aria-label="Mark ${s.name} present">
-      </div>
-    `;
+            <div class="serial">${String(students.indexOf(s) + 1).padStart(2, "0")}</div>
+            <div class="student-id">${s.id.slice(-3)}</div>
+            <div>
+              <div class="student-name">${s.name}</div>
+              <div class="status-text">${isPresent ? "● PRESENT" : "○ ABSENT"}</div>
+            </div>
+            <div class="check-area">
+              <input type="checkbox" ${isPresent ? "checked" : ""} aria-label="Mark ${s.name} present">
+            </div>
+          `;
 
-          const checkbox = row.querySelector("input");
+          const checkbox = row.querySelector('input[type="checkbox"]');
 
-          checkbox.addEventListener("click", (e) => e.stopPropagation());
+          checkbox.addEventListener("click", (e) => {
+            e.stopPropagation();
+          });
 
           checkbox.addEventListener("change", () => {
             setAttendance(s.id, checkbox.checked);
@@ -2411,56 +1493,38 @@
             toggleStudentRow(s.id);
           });
 
-          row.style.animationDelay = Math.min(index * 18, 260) + "ms";
-
           studentList.appendChild(row);
         });
 
         updateStats();
-        setTopHeight();
 
-        // Only the row that was just tapped gets the check animation.
+        // Checkbox tap animation for current touched item
         if (animateCheckboxId) {
           requestAnimationFrame(() => {
             const rows = studentList.querySelectorAll(".student");
-            rows.forEach((row) => {
-              const idEl = row.querySelector(".student-id");
-              const checkbox = row.querySelector("input");
+            rows.forEach((r) => {
+              const idEl = r.querySelector(".student-id");
+              const cb = r.querySelector('input[type="checkbox"]');
               if (
                 idEl &&
-                checkbox &&
+                cb &&
                 idEl.textContent.trim() === animateCheckboxId.slice(-3)
               ) {
-                checkbox.classList.add("just-tapped");
-                setTimeout(() => checkbox.classList.remove("just-tapped"), 260);
+                cb.classList.add("just-tapped");
+                setTimeout(() => cb.classList.remove("just-tapped"), 240);
               }
             });
           });
         }
-
         animateCheckboxId = null;
       }
 
+      // ===== STATS & OUTPUT =====
       function updateStats() {
         const present = students.filter((s) => !!attendance[s.id]).length;
         const total = students.length;
-        const absent = total - present;
         const percent = total ? (present / total) * 100 : 0;
 
-        // Legacy elements, if they still exist.
-        const presentEl = document.getElementById("presentCount");
-        const absentEl = document.getElementById("absentCount");
-        const totalEl = document.getElementById("totalCount");
-        const percentEl = document.getElementById("percentage");
-        const progressEl = document.getElementById("progressFill");
-
-        if (presentEl) presentEl.textContent = present;
-        if (absentEl) absentEl.textContent = absent;
-        if (totalEl) totalEl.textContent = total;
-        if (percentEl) percentEl.textContent = percent.toFixed(1) + "%";
-        if (progressEl) progressEl.style.width = percent + "%";
-
-        // Header live elements.
         const headerPresent = document.getElementById("headerPresent");
         const headerTotal = document.getElementById("headerTotal");
         const headerPercent = document.getElementById("headerPercentage");
@@ -2481,6 +1545,15 @@
                 : "Ready to Take Attendance";
         }
 
+        // Print header updates
+        const printCourseName = document.getElementById("printCourseName");
+        const printDateName = document.getElementById("printDateName");
+        const printSummary = document.getElementById("printSummary");
+        if (printCourseName) printCourseName.textContent = currentCourse;
+        if (printDateName) printDateName.textContent = formatFullDate(currentDate);
+        if (printSummary)
+          printSummary.textContent = `${present} Present / ${total - present} Absent (${percent.toFixed(1)}%)`;
+
         updateOutputLive();
       }
 
@@ -2488,26 +1561,155 @@
         renderStudents();
       }
 
-      function setFilter(f, button) {
+      function setFilter(f, btn) {
         currentFilter = f;
         document
           .querySelectorAll(".filter-btn")
           .forEach((x) => x.classList.remove("active"));
-        button.classList.add("active");
+        if (btn) btn.classList.add("active");
         renderStudents();
       }
 
-      function markAllPresent() {
-        const total = students.length;
+      // Format present message required: "assalamulikm sir, [course name] date er present list"
+      function buildPresentMessage() {
+        const presentStudents = students.filter((s) => !!attendance[s.id]);
+        if (!presentStudents.length) return "";
 
+        const ids = presentStudents.map((s) => s.id.slice(-3)).join("\n");
+        const dateFormatted = formatDisplayDate(currentDate);
+
+        return `Assalamu Alaikum Sir,\n${currentCourse} (${dateFormatted}) er present list:\n\n${ids}`;
+      }
+
+      function updateOutputLive() {
+        const presentStudents = students.filter((s) => !!attendance[s.id]);
+        const text = buildPresentMessage();
+
+        const outputText = document.getElementById("outputText");
+        const outputCount = document.getElementById("outputCount");
+        const outputPlaceholder = document.getElementById("outputPlaceholder");
+
+        if (outputText) {
+          outputText.textContent = text;
+          outputText.style.display = presentStudents.length ? "block" : "none";
+        }
+
+        if (outputCount) {
+          outputCount.textContent = presentStudents.length;
+        }
+
+        if (outputPlaceholder) {
+          outputPlaceholder.style.display = presentStudents.length
+            ? "none"
+            : "block";
+        }
+
+        if (output) {
+          output.value = text;
+        }
+      }
+
+      // ===== COPY ACTIONS =====
+      function copyResult() {
+        const text = buildPresentMessage();
+        if (!text) {
+          return showToast("No students are marked Present yet");
+        }
+        copyText(text);
+        showToast(`✓ Present list copied for ${currentCourse}`);
+      }
+
+      function copyRawPresentIDs() {
+        closeMoreMenu();
+        const ids = students
+          .filter((s) => !!attendance[s.id])
+          .map((s) => s.id.slice(-3));
+        if (!ids.length) {
+          return showToast("No Present students");
+        }
+        copyText(ids.join("\n"));
+        showToast(`✓ ${ids.length} Present IDs copied (raw)`);
+      }
+
+      // User requested feature: date first, then absent students' names and IDs
+      function copyAbsentList() {
+        closeMoreMenu();
+        const absentStudents = students.filter((s) => !attendance[s.id]);
+        if (!absentStudents.length) {
+          return showToast("Everyone is Present! No absent students.");
+        }
+
+        const dateFormatted = formatFullDate(currentDate);
+        const list = absentStudents
+          .map((s, idx) => `${idx + 1}. ${s.id} - ${s.name}`)
+          .join("\n");
+
+        const message = `Date: ${dateFormatted}\nCourse: ${currentCourse}\nTotal Absent: ${absentStudents.length}\n\nAbsent Students:\n${list}`;
+
+        copyText(message);
+        showToast(`📋 ${absentStudents.length} Absent student(s) copied`);
+      }
+
+      function copyText(text) {
+        if (navigator.clipboard && window.isSecureContext) {
+          navigator.clipboard.writeText(text).catch(() => fallbackCopy(text));
+        } else {
+          fallbackCopy(text);
+        }
+      }
+
+      function fallbackCopy(text) {
+        const t = document.createElement("textarea");
+        t.value = text;
+        t.style.position = "fixed";
+        t.style.top = "-9999px";
+        t.style.left = "-9999px";
+        t.style.opacity = "0";
+        document.body.appendChild(t);
+        t.focus();
+        t.select();
+        try {
+          document.execCommand("copy");
+        } catch (e) {
+          console.error("Copy command failed", e);
+        }
+        t.remove();
+      }
+
+      // ===== MORE MENU =====
+      function toggleMoreMenu(event) {
+        if (event) event.stopPropagation();
+        const menu = document.getElementById("moreMenu");
+        if (menu) menu.classList.toggle("show");
+      }
+
+      function closeMoreMenu() {
+        const menu = document.getElementById("moreMenu");
+        if (menu) menu.classList.remove("show");
+      }
+
+      document.addEventListener("click", (e) => {
+        const menu = document.getElementById("moreMenu");
+        const moreBtn = document.getElementById("moreBtn");
+        if (menu && menu.classList.contains("show")) {
+          if (!menu.contains(e.target) && (!moreBtn || !moreBtn.contains(e.target))) {
+            menu.classList.remove("show");
+          }
+        }
+      });
+
+      // ===== BULK ACTIONS =====
+      function markAllPresent() {
+        closeMoreMenu();
+        const total = students.length;
         if (Object.keys(attendance).length === total) {
           return showToast("All students are already Present");
         }
 
-        if (!confirm(`Mark all ${total} students as Present?`)) return;
+        if (!confirm(`Mark all ${total} students as Present for ${currentCourse}?`))
+          return;
 
         previousAttendance = JSON.stringify(attendance);
-
         students.forEach((s) => (attendance[s.id] = true));
 
         saveAttendance();
@@ -2516,13 +1718,13 @@
       }
 
       function clearAll() {
+        closeMoreMenu();
         const count = Object.keys(attendance).length;
-
         if (!count) {
           return showToast("Attendance is already empty");
         }
 
-        if (!confirm(`Remove attendance for ${count} students?`)) return;
+        if (!confirm(`Reset attendance for ${currentCourse}?`)) return;
 
         previousAttendance = JSON.stringify(attendance);
         attendance = {};
@@ -2533,98 +1735,27 @@
       }
 
       function undoLastAction() {
+        closeMoreMenu();
         if (previousAttendance === null) {
           return showToast("Nothing to undo");
         }
 
-        attendance = JSON.parse(previousAttendance);
-        previousAttendance = null;
-
-        saveAttendance();
-        renderStudents();
-        showToast("↩ Last action undone");
-      }
-
-      function updateOutputLive() {
-        const ids = students
-          .filter((s) => !!attendance[s.id])
-          .map((s) => s.id.slice(-3));
-
-        const text = ids.join("\n");
-
-        const outputText = document.getElementById("outputText");
-        const outputCount = document.getElementById("outputCount");
-        const outputPlaceholder = document.getElementById("outputPlaceholder");
-
-        if (outputText) {
-          outputText.textContent = text;
-          outputText.style.display = ids.length ? "block" : "none";
-        }
-
-        if (outputCount) {
-          outputCount.textContent = ids.length;
-        }
-
-        if (outputPlaceholder) {
-          outputPlaceholder.style.display = ids.length ? "none" : "block";
-        }
-
-        if (output) {
-          output.value = text;
+        try {
+          attendance = JSON.parse(previousAttendance);
+          previousAttendance = null;
+          saveAttendance();
+          renderStudents();
+          showToast("↩ Last action undone");
+        } catch (e) {
+          showToast("Could not undo action");
         }
       }
 
-      function toggleMoreMenu() {
-        document.getElementById("moreMenu").classList.toggle("show");
-      }
-
-      function generateAttendance() {
-        updateOutputLive();
-        const text = output ? output.value : "";
-
-        if (!text.trim()) {
-          return showToast("No Present students");
-        }
-
-        copyText(text);
-        showToast(
-          `${text.split("\n").filter(Boolean).length} Present IDs copied`,
-        );
-      }
-
-      function copyResult() {
-        updateOutputLive();
-
-        const text = output ? output.value : "";
-
-        if (!text.trim()) {
-          return showToast("No Present IDs");
-        }
-
-        copyText(text);
-        showToast(
-          `${text.split("\n").filter(Boolean).length} Present IDs copied`,
-        );
-      }
-
-      function copyText(text) {
-        if (navigator.clipboard)
-          navigator.clipboard.writeText(text).catch(() => fallbackCopy(text));
-        else fallbackCopy(text);
-      }
-      function fallbackCopy(text) {
-        const t = document.createElement("textarea");
-        t.value = text;
-        document.body.appendChild(t);
-        t.select();
-        document.execCommand("copy");
-        t.remove();
-      }
-
+      // ===== EXPORT =====
       function downloadFile(content, name, type) {
-        const blob = new Blob([content], { type }),
-          url = URL.createObjectURL(blob),
-          a = document.createElement("a");
+        const blob = new Blob([content], { type });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
         a.href = url;
         a.download = name;
         document.body.appendChild(a);
@@ -2632,71 +1763,98 @@
         a.remove();
         URL.revokeObjectURL(url);
       }
+
       function exportTXT() {
-        const ids = students
-          .filter((s) => attendance[s.id])
-          .map((s) => s.id.slice(-3));
-        if (!ids.length) return showToast("No Present students");
+        closeMoreMenu();
+        const presentStudents = students.filter((s) => !!attendance[s.id]);
+        if (!presentStudents.length) return showToast("No Present students to export");
+
+        const text = buildPresentMessage();
+        const cleanCourse = currentCourse.replace(/[^a-zA-Z0-9]/g, "_");
         downloadFile(
-          ids.join("\n"),
-          `attendance_${currentDate}.txt`,
+          text,
+          `attendance_${cleanCourse}_${currentDate}.txt`,
           "text/plain",
         );
-        showToast("TXT downloaded");
-      }
-      function exportCSV() {
-        const p = students.filter((s) => attendance[s.id]);
-        if (!p.length) return showToast("No Present students");
-        let csv = "ID,Student Name,Status,Date\n";
-        p.forEach(
-          (s) =>
-            (csv += `"${s.id.slice(-3)}","${s.name.replace(/"/g, '""')}","Present","${currentDate}"\n`),
-        );
-        downloadFile(csv, `attendance_${currentDate}.csv`, "text/csv");
-        showToast("CSV downloaded");
+        showToast("TXT file downloaded");
       }
 
+      function exportCSV() {
+        closeMoreMenu();
+        let csv = "Serial,ID,Student Name,Status,Course,Date\n";
+        students.forEach((s, idx) => {
+          const status = attendance[s.id] ? "Present" : "Absent";
+          csv += `"${idx + 1}","${s.id}","${s.name.replace(/"/g, '""')}","${status}","${currentCourse}","${currentDate}"\n`;
+        });
+        const cleanCourse = currentCourse.replace(/[^a-zA-Z0-9]/g, "_");
+        downloadFile(
+          csv,
+          `attendance_${cleanCourse}_${currentDate}.csv`,
+          "text/csv",
+        );
+        showToast("CSV file downloaded");
+      }
+
+      // ===== THEME =====
       function toggleTheme() {
         document.body.classList.toggle("dark");
-        const dark = document.body.classList.contains("dark");
-        localStorage.setItem("attendance_theme", dark ? "dark" : "light");
-        document.getElementById("themeButton").textContent = dark ? "☀️" : "🌙";
+        const isDark = document.body.classList.contains("dark");
+        try {
+          localStorage.setItem("attendance_theme", isDark ? "dark" : "light");
+        } catch (e) {}
+        const themeBtn = document.getElementById("themeButton");
+        if (themeBtn) themeBtn.textContent = isDark ? "☀️" : "🌙";
       }
+
       function loadTheme() {
-        if (localStorage.getItem("attendance_theme") === "dark") {
-          document.body.classList.add("dark");
-          document.getElementById("themeButton").textContent = "☀️";
-        }
+        try {
+          if (localStorage.getItem("attendance_theme") === "dark") {
+            document.body.classList.add("dark");
+            const themeBtn = document.getElementById("themeButton");
+            if (themeBtn) themeBtn.textContent = "☀️";
+          }
+        } catch (e) {}
       }
-      function setTopHeight() {
-        if (innerWidth <= 600) {
-          document.documentElement.style.setProperty(
-            "--top-height",
-            document.getElementById("topSection").offsetHeight + 8 + "px",
-          );
-        }
-      }
-      let toastTimer;
+
+      // ===== TOAST =====
+      let toastTimer = null;
       function showToast(msg) {
         const t = document.getElementById("toast");
+        if (!t) return;
         t.textContent = msg;
         t.classList.add("show");
         clearTimeout(toastTimer);
-        toastTimer = setTimeout(() => t.classList.remove("show"), 2200);
+        toastTimer = setTimeout(() => {
+          t.classList.remove("show");
+        }, 2200);
       }
+
+      // ===== INITIALIZATION =====
       function initialize() {
-        datePicker.value = currentDate;
-        updateDateDisplay();
         loadTheme();
+        populateCourses();
+        updateDateDisplay();
         loadAttendance();
         renderStudents();
         updateStats();
-        setTopHeight();
+
+        // Register Service Worker for offline PWA support (when hosted online)
+        if ("serviceWorker" in navigator && window.location.protocol.startsWith("http")) {
+          navigator.serviceWorker
+            .register("./sw.js")
+            .then(() => {
+              console.log("Loopify Service Worker registered for offline use.");
+            })
+            .catch((err) => {
+              console.warn("Service Worker registration failed:", err);
+            });
+        }
       }
-      addEventListener("resize", setTopHeight);
-      initialize();
-      updateOutputLive();
-      requestAnimationFrame(setTopHeight);
+
+      document.addEventListener("DOMContentLoaded", initialize);
+      if (document.readyState === "interactive" || document.readyState === "complete") {
+        initialize();
+      }
     </script>
   </body>
 </html>
