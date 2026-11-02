@@ -1,4 +1,4 @@
-const CACHE_NAME = 'loopify-cache-v3';
+const CACHE_NAME = 'loopify-cache-v6';
 const ASSETS_TO_CACHE = [
   './',
   './index.html',

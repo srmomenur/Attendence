@@ -19,7 +19,7 @@
       rel="stylesheet"
     />
 
-    <title>Loopify - Smart Attendance Manager</title>
+    <title>Loopify - Smart Attendance</title>
     <style>
       *,
       *::before,
@@ -34,14 +34,13 @@
         --font-main: "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont,
           "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
         --primary: #2563eb;
-        --primary-glow: rgba(37, 99, 235, 0.28);
+        --primary-glow: rgba(37, 99, 235, 0.25);
         --primary-dark: #1d4ed8;
         --primary2: #4f46e5;
         --success: #16a34a;
-        --success-glow: rgba(22, 163, 74, 0.25);
+        --success-glow: rgba(22, 163, 74, 0.2);
         --success-bg: rgba(22, 163, 74, 0.08);
         --danger: #dc2626;
-        --danger-glow: rgba(220, 38, 38, 0.2);
         --danger-bg: rgba(220, 38, 38, 0.08);
         --bg: #f8fafc;
         --card: #ffffff;
@@ -50,11 +49,11 @@
         --muted: #64748b;
         --border: #e2e8f0;
         --header-gradient: linear-gradient(135deg, #2563eb, #4f46e5 50%, #7c3aed);
-        --footer-bg: rgba(255, 255, 255, 0.92);
-        --footer-shadow: 0 -10px 25px rgba(15, 23, 42, 0.08);
-        --radius-lg: 18px;
-        --radius-md: 13px;
-        --radius-sm: 9px;
+        --footer-bg: rgba(255, 255, 255, 0.94);
+        --footer-shadow: 0 -8px 20px rgba(15, 23, 42, 0.06);
+        --radius-lg: 16px;
+        --radius-md: 11px;
+        --radius-sm: 8px;
       }
 
       body.dark {
@@ -65,8 +64,8 @@
         --muted: #94a3b8;
         --border: #1e293b;
         --header-gradient: linear-gradient(135deg, #1d4ed8, #3730a3 50%, #6d28d9);
-        --footer-bg: rgba(19, 27, 46, 0.92);
-        --footer-shadow: 0 -10px 25px rgba(0, 0, 0, 0.45);
+        --footer-bg: rgba(19, 27, 46, 0.94);
+        --footer-shadow: 0 -8px 20px rgba(0, 0, 0, 0.4);
       }
 
       body {
@@ -74,7 +73,7 @@
         background-color: var(--bg);
         color: var(--text);
         min-height: 100vh;
-        padding: 20px 14px 220px;
+        padding: 10px 10px 145px;
         transition: background-color 0.25s ease, color 0.25s ease;
         -webkit-font-smoothing: antialiased;
         overflow-x: hidden;
@@ -94,261 +93,224 @@
 
       .container {
         width: 100%;
-        max-width: 860px;
+        max-width: 800px;
         margin: 0 auto;
       }
 
-      /* ===== HEADER ===== */
-      .header {
+      /* ===== 1. ORIGINAL HERO HEADER (LEFT-ALIGNED / SPACE-BETWEEN) ===== */
+      .hero-header {
         position: relative;
         background: var(--header-gradient);
         color: #ffffff;
         border-radius: var(--radius-lg);
-        padding: 20px 22px;
-        margin-bottom: 12px;
-        box-shadow: 0 12px 30px var(--primary-glow);
+        padding: 18px 20px 16px;
+        margin-bottom: 10px;
+        box-shadow: 0 10px 25px var(--primary-glow);
         overflow: hidden;
       }
 
-      .header::before {
+      .hero-header::before {
         content: "";
         position: absolute;
-        width: 180px;
-        height: 180px;
+        width: 160px;
+        height: 160px;
         border-radius: 50%;
         background: rgba(255, 255, 255, 0.08);
-        right: -60px;
-        top: -60px;
+        right: -50px;
+        top: -50px;
         pointer-events: none;
       }
 
-      .header-content {
+      .hero-header-content {
         position: relative;
         z-index: 2;
       }
 
-      .header-top {
+      .hero-header-top {
         display: flex;
         justify-content: space-between;
-        align-items: center;
+        align-items: flex-start;
         gap: 10px;
       }
 
-      .header h1 {
-        font-size: 25px;
+      .hero-title {
+        font-size: 23px;
         font-weight: 800;
         letter-spacing: -0.5px;
-        display: flex;
-        align-items: center;
-        gap: 8px;
       }
 
-      .header p {
-        font-size: 13px;
-        opacity: 0.9;
+      .hero-subtitle {
+        font-size: 12.5px;
+        opacity: 0.88;
         margin-top: 2px;
         font-weight: 500;
       }
 
-      .date-text {
-        font-size: 12px;
-        opacity: 0.85;
+      .hero-date-text {
+        font-size: 11.5px;
+        opacity: 0.82;
         margin-top: 3px;
         font-weight: 500;
       }
 
       .theme-btn {
-        width: 42px;
-        height: 42px;
+        width: 34px;
+        height: 34px;
         border: 0;
         border-radius: 50%;
         background: rgba(255, 255, 255, 0.2);
-        backdrop-filter: blur(8px);
         color: #ffffff;
-        font-size: 19px;
+        font-size: 16px;
         display: flex;
         align-items: center;
         justify-content: center;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
         transition: transform 0.2s ease, background-color 0.2s ease;
       }
 
       .theme-btn:hover {
-        transform: rotate(20deg) scale(1.08);
+        transform: scale(1.08);
         background: rgba(255, 255, 255, 0.3);
       }
 
-      .theme-btn:active {
-        transform: scale(0.94);
-      }
-
-      /* ===== COURSE SELECTOR BAR ===== */
-      .course-bar {
-        margin-top: 13px;
+      /* Course Selector Bar in Hero Header */
+      .hero-course-bar {
+        margin-top: 12px;
         display: flex;
         align-items: center;
-        gap: 10px;
+        gap: 8px;
         background: rgba(255, 255, 255, 0.18);
         border: 1px solid rgba(255, 255, 255, 0.26);
-        border-radius: var(--radius-md);
-        padding: 8px 12px;
-        backdrop-filter: blur(10px);
-        transition: background-color 0.2s ease;
+        border-radius: var(--radius-sm);
+        padding: 6px 12px;
+        backdrop-filter: blur(8px);
       }
 
-      .course-bar:focus-within {
-        background: rgba(255, 255, 255, 0.26);
-        border-color: rgba(255, 255, 255, 0.4);
-      }
-
-      .course-bar label {
-        font-size: 13.5px;
+      .hero-course-bar label {
+        font-size: 12.5px;
         font-weight: 800;
-        color: #ffffff;
         white-space: nowrap;
-        display: flex;
-        align-items: center;
-        gap: 5px;
-        letter-spacing: 0.2px;
       }
 
-      .course-bar select {
+      .hero-course-bar select {
         flex: 1;
         background: transparent;
         color: #ffffff;
         border: 0;
         outline: 0;
-        font-size: 14.5px;
+        font-size: 13.5px;
         font-weight: 700;
         cursor: pointer;
       }
 
-      .course-bar select option {
+      .hero-course-bar select option {
         background: var(--card);
         color: var(--text);
-        font-size: 14px;
+        font-size: 13px;
         font-weight: 600;
-        padding: 8px;
       }
 
-      /* ===== LIVE SUMMARY & PROGRESS ===== */
-      .live-summary {
+      /* Live Summary in Hero Header */
+      .hero-live-summary {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        margin-top: 13px;
-        font-size: 13px;
+        margin-top: 12px;
+        font-size: 12.5px;
       }
 
-      .live-summary-status {
+      .hero-live-status {
         display: flex;
         align-items: center;
-        gap: 8px;
+        gap: 6px;
         opacity: 0.95;
       }
 
       .live-dot {
-        width: 9px;
-        height: 9px;
+        width: 8px;
+        height: 8px;
         border-radius: 50%;
         background: #4ade80;
-        box-shadow: 0 0 0 4px rgba(74, 222, 128, 0.2);
-        animation: pulseLiveDot 2.2s infinite ease-in-out;
+        box-shadow: 0 0 0 3px rgba(74, 222, 128, 0.25);
       }
 
-      @keyframes pulseLiveDot {
-        0%, 100% {
-          transform: scale(1);
-          box-shadow: 0 0 0 4px rgba(74, 222, 128, 0.2);
-        }
-        50% {
-          transform: scale(1.1);
-          box-shadow: 0 0 0 7px rgba(74, 222, 128, 0.05);
-        }
-      }
-
-      .live-summary strong {
-        font-size: 14.5px;
+      .hero-live-summary strong {
+        font-size: 13.5px;
         font-weight: 800;
       }
 
-      .header-progress {
-        height: 8px;
+      .hero-progress {
+        height: 6px;
         background: rgba(255, 255, 255, 0.22);
-        border-radius: 20px;
+        border-radius: 10px;
         overflow: hidden;
-        margin-top: 9px;
+        margin-top: 8px;
       }
 
-      .header-progress-fill {
+      .hero-progress-fill {
         height: 100%;
         width: 0%;
-        border-radius: 20px;
+        border-radius: 10px;
         background: #ffffff;
-        transition: width 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+        transition: width 0.3s ease;
       }
 
-      .header-percentage {
+      .hero-percentage {
         text-align: right;
-        font-size: 12px;
+        font-size: 11px;
         font-weight: 800;
-        margin-top: 5px;
+        margin-top: 3px;
         opacity: 0.95;
       }
 
-      /* ===== DATE SELECTOR ===== */
-      .date-selector {
-        position: relative;
+      /* Date Selector in Hero Header */
+      .hero-date-selector {
         display: flex;
         align-items: center;
         gap: 8px;
-        margin-top: 12px;
+        margin-top: 10px;
       }
 
-      .date-selector button {
-        width: 38px;
-        height: 38px;
+      .date-nav-btn {
+        width: 34px;
+        height: 34px;
         border: 0;
-        border-radius: var(--radius-sm);
+        border-radius: 8px;
         background: rgba(255, 255, 255, 0.2);
         color: #ffffff;
-        font-size: 19px;
-        font-weight: 700;
+        font-size: 18px;
+        font-weight: 800;
         display: flex;
         align-items: center;
         justify-content: center;
-        transition: transform 0.15s ease, background-color 0.15s ease;
+        transition: background-color 0.15s ease;
       }
 
-      .date-selector button:hover {
-        background: rgba(255, 255, 255, 0.3);
-        transform: scale(1.05);
+      .date-nav-btn:hover {
+        background: rgba(255, 255, 255, 0.32);
       }
 
-      .date-selector button:active {
-        transform: scale(0.95);
-      }
-
-      .date-display {
+      .hero-date-display {
         flex: 1;
-        height: 38px;
-        border-radius: var(--radius-sm);
+        height: 34px;
+        border-radius: 8px;
         background: rgba(255, 255, 255, 0.2);
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 14.5px;
+        gap: 6px;
+        font-size: 13px;
         font-weight: 800;
         cursor: pointer;
-        transition: background-color 0.15s ease;
         user-select: none;
       }
 
-      .date-display:hover {
-        background: rgba(255, 255, 255, 0.3);
+      .hero-date-display:hover {
+        background: rgba(255, 255, 255, 0.32);
       }
 
-      .date-selector input[type="date"] {
+      /* Hidden Date Picker Trigger */
+      .hero-date-display input[type="date"],
+      .c-date-display input[type="date"] {
         position: absolute;
         opacity: 0;
         width: 0;
@@ -356,127 +318,290 @@
         pointer-events: none;
       }
 
-      /* ===== SEARCH & FILTERS ===== */
-      .search-box {
-        background: var(--card);
-        padding: 8px 12px;
+      /* ===== 2. STICKY LOCKED SECTION (ACTIVATES ON SCROLL) ===== */
+      .sticky-wrapper {
+        position: sticky;
+        top: 0;
+        z-index: 900;
+        background: var(--bg);
+        padding: 5px 0 6px;
+        transition: box-shadow 0.25s ease;
+      }
+
+      body.is-scrolled .sticky-wrapper {
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+      }
+
+      /* Compact header: hidden at top, expands smoothly when scrolled down */
+      .compact-sticky-header {
+        background: var(--header-gradient);
+        color: #ffffff;
         border-radius: var(--radius-md);
-        margin-bottom: 10px;
+        box-shadow: 0 4px 14px var(--primary-glow);
+        max-height: 0;
+        opacity: 0;
+        overflow: hidden;
+        padding: 0 10px;
+        margin-bottom: 0;
+        pointer-events: none;
+        transition: max-height 0.26s cubic-bezier(0.16, 1, 0.3, 1),
+                    opacity 0.2s ease,
+                    padding 0.26s ease,
+                    margin-bottom 0.26s ease;
+      }
+
+      body.is-scrolled .compact-sticky-header {
+        max-height: 75px;
+        opacity: 1;
+        pointer-events: auto;
+        padding: 7px 10px 5px;
+        margin-bottom: 6px;
+      }
+
+      .compact-main-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 6px;
+      }
+
+      .compact-brand-course {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        flex: 1;
+        min-width: 0;
+      }
+
+      .compact-logo {
+        font-size: 14px;
+        font-weight: 800;
+        white-space: nowrap;
+      }
+
+      .compact-select-box {
+        flex: 1;
+        min-width: 0;
+        background: rgba(255, 255, 255, 0.18);
+        border: 1px solid rgba(255, 255, 255, 0.26);
+        border-radius: 6px;
+        padding: 2px 6px;
+      }
+
+      .compact-select-box select {
+        width: 100%;
+        background: transparent;
+        color: #ffffff;
+        border: 0;
+        outline: 0;
+        font-size: 12px;
+        font-weight: 700;
+        cursor: pointer;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+      }
+
+      .compact-select-box select option {
+        background: var(--card);
+        color: var(--text);
+        font-size: 13px;
+        font-weight: 600;
+      }
+
+      .compact-right-stats {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+      }
+
+      .compact-stat-pill {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        background: rgba(255, 255, 255, 0.2);
+        border: 1px solid rgba(255, 255, 255, 0.25);
+        border-radius: 6px;
+        padding: 2px 7px;
+        font-size: 11.5px;
+        font-weight: 800;
+        white-space: nowrap;
+      }
+
+      .compact-progress-line {
+        height: 3px;
+        background: rgba(255, 255, 255, 0.22);
+        border-radius: 6px;
+        overflow: hidden;
+        margin: 5px 0 4px;
+      }
+
+      .compact-progress-fill {
+        height: 100%;
+        width: 0%;
+        border-radius: 6px;
+        background: #ffffff;
+        transition: width 0.3s ease;
+      }
+
+      /* Compact Sub Row with Date and Momenur Badge */
+      .compact-sub-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 6px;
+      }
+
+      .compact-date-nav {
+        display: flex;
+        align-items: center;
+        gap: 3px;
+      }
+
+      .c-date-btn {
+        width: 22px;
+        height: 20px;
+        border: 0;
+        border-radius: 4px;
+        background: rgba(255, 255, 255, 0.2);
+        color: #ffffff;
+        font-size: 13px;
+        font-weight: 800;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .c-date-display {
+        height: 20px;
+        padding: 0 6px;
+        border-radius: 4px;
+        background: rgba(255, 255, 255, 0.2);
+        display: flex;
+        align-items: center;
+        gap: 3px;
+        font-size: 11px;
+        font-weight: 700;
+        cursor: pointer;
+      }
+
+      /* Momenur Signature in Compact Header Empty Space */
+      .compact-momenur-badge {
+        font-size: 11px;
+        font-weight: 800;
+        color: #ffffff;
+        background: rgba(255, 255, 255, 0.2);
+        border: 1px solid rgba(255, 255, 255, 0.28);
+        border-radius: 5px;
+        padding: 1px 7px;
+        letter-spacing: 0.3px;
+        white-space: nowrap;
+      }
+
+      /* ===== COMPACT SEARCH & FILTER BAR ===== */
+      .search-filter-bar {
+        display: flex;
+        gap: 6px;
+        align-items: center;
+        background: var(--card);
         border: 1px solid var(--border);
-        box-shadow: 0 3px 12px rgba(0, 0, 0, 0.03);
-        transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        border-radius: var(--radius-md);
+        padding: 4px 6px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
       }
 
-      .search-box:focus-within {
-        border-color: var(--primary);
-        box-shadow: 0 4px 18px var(--primary-glow);
-      }
-
-      .search-wrapper {
+      .search-wrap {
         position: relative;
+        flex: 1;
+        min-width: 0;
         display: flex;
         align-items: center;
       }
 
       .search-icon {
         position: absolute;
-        left: 12px;
-        font-size: 17px;
-        opacity: 0.6;
+        left: 8px;
+        font-size: 13px;
+        opacity: 0.55;
         pointer-events: none;
       }
 
-      .search-box input {
+      .search-wrap input {
         width: 100%;
-        height: 44px;
+        height: 30px;
         border: 1px solid var(--border);
-        border-radius: var(--radius-sm);
-        padding: 0 16px 0 42px;
-        font-size: 14px;
+        border-radius: 6px;
+        padding: 0 8px 0 26px;
+        font-size: 12px;
         font-weight: 600;
         outline: 0;
         background: var(--bg);
         color: var(--text);
-        transition: border-color 0.2s ease, background-color 0.2s ease;
       }
 
-      .search-box input:focus {
+      .search-wrap input:focus {
         border-color: var(--primary);
         background: var(--card);
       }
 
-      .filters {
+      .filter-tabs {
         display: flex;
-        gap: 8px;
-        margin-bottom: 12px;
-        overflow-x: auto;
-        scrollbar-width: none;
+        gap: 3px;
       }
 
-      .filters::-webkit-scrollbar {
-        display: none;
-      }
-
-      .filter-btn {
+      .filter-pill {
         white-space: nowrap;
         border: 1px solid var(--border);
-        background: var(--card);
+        background: var(--bg);
         color: var(--muted);
-        border-radius: 20px;
-        padding: 8px 16px;
-        font-size: 12.5px;
+        border-radius: 6px;
+        padding: 4px 8px;
+        font-size: 11px;
         font-weight: 800;
-        transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+        transition: background-color 0.12s ease, color 0.12s ease;
       }
 
-      .filter-btn.active {
+      .filter-pill.active {
         background: var(--primary);
         color: #ffffff;
         border-color: var(--primary);
       }
 
-      .filter-btn:hover:not(.active) {
-        border-color: var(--primary);
-        color: var(--primary);
-      }
-
-      /* ===== STUDENT LIST (ROCK-SOLID STABILITY - NO JUMP / NO DAKKHA) ===== */
+      /* ===== STUDENT LIST ===== */
       .student-list {
         background: var(--card);
-        border-radius: var(--radius-lg);
+        border-radius: var(--radius-md);
         overflow: hidden;
         border: 1px solid var(--border);
-        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.04);
-        margin-bottom: 16px;
+        box-shadow: 0 4px 14px rgba(0, 0, 0, 0.03);
+        margin-top: 4px;
       }
 
       .list-header {
         display: grid;
-        grid-template-columns: 42px 70px 1fr 65px;
-        gap: 10px;
+        grid-template-columns: 34px 58px 1fr 50px;
+        gap: 8px;
         align-items: center;
-        padding: 13px 18px;
+        padding: 9px 12px;
         background: rgba(37, 99, 235, 0.04);
         border-bottom: 1px solid var(--border);
-        font-size: 12px;
+        font-size: 11px;
         font-weight: 800;
         color: var(--muted);
         text-transform: uppercase;
         letter-spacing: 0.5px;
       }
 
-      /* Notice: Absolutely NO transform scale / translate on student row! */
       .student {
         display: grid;
-        grid-template-columns: 42px 70px 1fr 65px;
-        gap: 10px;
+        grid-template-columns: 34px 58px 1fr 50px;
+        gap: 8px;
         align-items: center;
-        padding: 13px 18px;
+        padding: 9px 12px;
         border-bottom: 1px solid var(--border);
-        transition: background-color 0.15s ease, box-shadow 0.15s ease;
+        transition: background-color 0.12s ease, box-shadow 0.12s ease;
         cursor: pointer;
         user-select: none;
-        /* Stable inset indicator avoids 4px border content jumping */
         box-shadow: inset 0 0 0 transparent;
       }
 
@@ -495,31 +620,30 @@
 
       .serial {
         color: var(--muted);
-        font-size: 13px;
+        font-size: 11.5px;
         font-weight: 700;
       }
 
       .student-id {
-        font-size: 16px;
-        font-weight: 900;
+        font-size: 14px;
+        font-weight: 800;
         color: var(--primary);
-        letter-spacing: 0.3px;
         font-variant-numeric: tabular-nums;
       }
 
       .student-name {
-        font-size: 15px;
+        font-size: 13.5px;
         font-weight: 700;
-        line-height: 1.35;
+        line-height: 1.3;
       }
 
       .status-text {
-        font-size: 10.5px;
+        font-size: 9.5px;
         margin-top: 2px;
         color: var(--muted);
         font-weight: 800;
         text-transform: uppercase;
-        letter-spacing: 0.4px;
+        letter-spacing: 0.3px;
       }
 
       .student.present .status-text {
@@ -535,14 +659,14 @@
       .check-area input[type="checkbox"] {
         appearance: none;
         -webkit-appearance: none;
-        width: 28px;
-        height: 28px;
+        width: 25px;
+        height: 25px;
         border: 2px solid #cbd5e1;
-        border-radius: 8px;
+        border-radius: 7px;
         cursor: pointer;
         position: relative;
         background: var(--card);
-        transition: background-color 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+        transition: background-color 0.12s ease, border-color 0.12s ease;
       }
 
       body.dark .check-area input[type="checkbox"] {
@@ -552,13 +676,12 @@
       .check-area input[type="checkbox"]:checked {
         background: var(--success);
         border-color: var(--success);
-        box-shadow: 0 0 8px var(--success-glow);
       }
 
       .check-area input[type="checkbox"]:checked::after {
         content: "✓";
         color: #ffffff;
-        font-size: 17px;
+        font-size: 15px;
         font-weight: 900;
         position: absolute;
         left: 5px;
@@ -567,29 +690,29 @@
 
       .empty-message {
         text-align: center;
-        padding: 45px 18px;
+        padding: 35px 14px;
         color: var(--muted);
-        font-size: 14.5px;
+        font-size: 13.5px;
         font-weight: 700;
       }
 
-      /* ===== FIXED FLOATING FOOTER ===== */
+      /* ===== COMPACT FIXED FOOTER ===== */
       .footer-fixed {
         position: fixed;
         left: 0;
         right: 0;
         bottom: 0;
         z-index: 1000;
-        padding: 10px 16px calc(10px + env(safe-area-inset-bottom));
+        padding: 6px 12px calc(6px + env(safe-area-inset-bottom));
         background: var(--footer-bg);
-        backdrop-filter: blur(16px);
-        -webkit-backdrop-filter: blur(16px);
+        backdrop-filter: blur(14px);
+        -webkit-backdrop-filter: blur(14px);
         border-top: 1px solid var(--border);
         box-shadow: var(--footer-shadow);
       }
 
       .footer-fixed-inner {
-        max-width: 860px;
+        max-width: 800px;
         margin: 0 auto;
         position: relative;
       }
@@ -597,21 +720,21 @@
       .footer-controls {
         display: grid;
         grid-template-columns: 1fr 1fr;
-        gap: 8px;
-        margin-bottom: 8px;
+        gap: 6px;
+        margin-bottom: 5px;
       }
 
       .action-button {
-        min-height: 42px;
+        min-height: 34px;
         border: 1px solid var(--border);
         border-radius: var(--radius-sm);
-        font-size: 13.5px;
+        font-size: 12px;
         font-weight: 800;
         display: flex;
         align-items: center;
         justify-content: center;
-        gap: 6px;
-        transition: background-color 0.15s ease, border-color 0.15s ease;
+        gap: 5px;
+        transition: background-color 0.12s ease;
       }
 
       .reset-btn {
@@ -621,7 +744,7 @@
       }
 
       .reset-btn:hover {
-        background: rgba(220, 38, 38, 0.14);
+        background: rgba(220, 38, 38, 0.15);
       }
 
       .more-btn {
@@ -635,14 +758,14 @@
         position: absolute;
         right: 0;
         bottom: 100%;
-        margin-bottom: 8px;
+        margin-bottom: 6px;
         z-index: 1100;
-        min-width: 230px;
-        padding: 6px;
+        min-width: 220px;
+        padding: 5px;
         background: var(--card);
         border: 1px solid var(--border);
         border-radius: var(--radius-md);
-        box-shadow: 0 12px 35px rgba(0, 0, 0, 0.18);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.18);
       }
 
       .more-menu.show {
@@ -650,28 +773,28 @@
       }
 
       .more-menu-header {
-        font-size: 11px;
+        font-size: 10.5px;
         font-weight: 800;
         color: var(--muted);
         text-transform: uppercase;
-        padding: 8px 12px 4px;
-        letter-spacing: 0.5px;
+        padding: 6px 10px 3px;
+        letter-spacing: 0.4px;
       }
 
       .more-menu button {
         display: flex;
         align-items: center;
-        gap: 8px;
+        gap: 7px;
         width: 100%;
         border: 0;
         background: transparent;
         color: var(--text);
         text-align: left;
-        padding: 10px 12px;
-        border-radius: var(--radius-sm);
-        font-size: 13.5px;
+        padding: 8px 10px;
+        border-radius: 6px;
+        font-size: 12.5px;
         font-weight: 700;
-        transition: background-color 0.15s ease, color 0.15s ease;
+        transition: background-color 0.12s ease;
       }
 
       .more-menu button:hover {
@@ -683,7 +806,7 @@
       .footer-output {
         background: var(--card);
         border: 1px solid var(--border);
-        border-radius: var(--radius-md);
+        border-radius: var(--radius-sm);
         overflow: hidden;
       }
 
@@ -691,29 +814,29 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
-        padding: 9px 12px;
+        padding: 6px 10px;
         border-bottom: 1px solid var(--border);
       }
 
       .output-title h2 {
-        font-size: 13px;
+        font-size: 12px;
         font-weight: 800;
         display: flex;
         align-items: center;
-        gap: 6px;
+        gap: 5px;
       }
 
       .output-count {
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        min-width: 22px;
-        height: 20px;
-        padding: 0 6px;
-        border-radius: 10px;
+        min-width: 20px;
+        height: 18px;
+        padding: 0 5px;
+        border-radius: 8px;
         background: rgba(37, 99, 235, 0.12);
         color: var(--primary);
-        font-size: 11px;
+        font-size: 10.5px;
         font-weight: 800;
       }
 
@@ -721,11 +844,11 @@
         border: 0;
         background: var(--primary);
         color: #ffffff;
-        border-radius: var(--radius-sm);
-        padding: 6px 16px;
-        font-size: 12.5px;
+        border-radius: 6px;
+        padding: 4px 14px;
+        font-size: 11.5px;
         font-weight: 800;
-        transition: background-color 0.15s ease;
+        transition: background-color 0.12s ease;
       }
 
       .copy-btn:hover {
@@ -733,10 +856,10 @@
       }
 
       .output-box {
-        max-height: 95px;
-        min-height: 50px;
+        max-height: 58px;
+        min-height: 38px;
         overflow-y: auto;
-        padding: 8px 12px;
+        padding: 5px 10px;
         background: var(--bg);
       }
 
@@ -744,35 +867,35 @@
         margin: 0;
         white-space: pre-wrap;
         font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-        font-size: 13px;
-        line-height: 1.55;
+        font-size: 11.5px;
+        line-height: 1.45;
         font-weight: 700;
         color: var(--text);
       }
 
       .output-placeholder {
         color: var(--muted);
-        font-size: 12px;
+        font-size: 11px;
         font-weight: 600;
-        padding: 4px 0;
+        padding: 3px 0;
       }
 
       /* ===== TOAST NOTIFICATION ===== */
       .toast {
         position: fixed;
         left: 50%;
-        bottom: 30px;
-        transform: translate(-50%, 80px);
+        bottom: 25px;
+        transform: translate(-50%, 70px);
         background: #0f172a;
         color: #ffffff;
-        padding: 10px 20px;
-        border-radius: 12px;
-        font-size: 13px;
+        padding: 8px 16px;
+        border-radius: 10px;
+        font-size: 12px;
         font-weight: 700;
         z-index: 99999;
         opacity: 0;
-        transition: transform 0.25s ease, opacity 0.25s ease;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        transition: transform 0.22s ease, opacity 0.22s ease;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
         pointer-events: none;
       }
 
@@ -787,166 +910,6 @@
         opacity: 1;
       }
 
-      /* ===== MOBILE RESPONSIVE ===== */
-      @media (max-width: 600px) {
-        body {
-          padding: 12px 10px 195px;
-        }
-
-        .header {
-          padding: 15px 15px;
-          border-radius: 16px;
-          margin-bottom: 10px;
-        }
-
-        .header h1 {
-          font-size: 21px;
-        }
-
-        .header p {
-          font-size: 11.5px;
-        }
-
-        .date-text {
-          font-size: 10.5px;
-        }
-
-        .theme-btn {
-          width: 38px;
-          height: 38px;
-          font-size: 17px;
-        }
-
-        .course-bar {
-          margin-top: 10px;
-          padding: 7px 11px;
-        }
-
-        .course-bar label {
-          font-size: 12px;
-        }
-
-        .course-bar select {
-          font-size: 13px;
-        }
-
-        .live-summary {
-          font-size: 11.5px;
-          margin-top: 10px;
-        }
-
-        .live-summary strong {
-          font-size: 12.5px;
-        }
-
-        .header-progress {
-          height: 6px;
-          margin-top: 7px;
-        }
-
-        .header-percentage {
-          font-size: 10.5px;
-        }
-
-        .date-selector {
-          margin-top: 10px;
-          gap: 6px;
-        }
-
-        .date-selector button {
-          width: 34px;
-          height: 34px;
-          font-size: 17px;
-        }
-
-        .date-display {
-          height: 34px;
-          font-size: 12.5px;
-        }
-
-        .search-box {
-          padding: 6px 10px;
-          margin-bottom: 8px;
-        }
-
-        .search-box input {
-          height: 38px;
-          font-size: 13.5px;
-          padding-left: 36px;
-        }
-
-        .search-icon {
-          left: 11px;
-          font-size: 16px;
-        }
-
-        .filters {
-          gap: 6px;
-          margin-bottom: 10px;
-        }
-
-        .filter-btn {
-          padding: 7px 14px;
-          font-size: 11.5px;
-        }
-
-        .student-list {
-          border-radius: 14px;
-          margin-bottom: 12px;
-        }
-
-        .list-header,
-        .student {
-          grid-template-columns: 34px 58px 1fr 54px;
-          gap: 8px;
-          padding: 12px 12px;
-        }
-
-        .list-header {
-          font-size: 10.5px;
-        }
-
-        .serial {
-          font-size: 12px;
-        }
-
-        .student-id {
-          font-size: 15px;
-        }
-
-        .student-name {
-          font-size: 14.5px;
-        }
-
-        .status-text {
-          font-size: 9.5px;
-        }
-
-        .check-area input[type="checkbox"] {
-          width: 27px;
-          height: 27px;
-        }
-
-        .footer-fixed {
-          padding: 9px 12px calc(9px + env(safe-area-inset-bottom));
-        }
-
-        .action-button {
-          min-height: 38px;
-          font-size: 12.5px;
-        }
-
-        .output-box {
-          max-height: 76px;
-          min-height: 42px;
-          padding: 7px 11px;
-        }
-
-        .output-box pre {
-          font-size: 12px;
-        }
-      }
-
       /* ===== PRINT STYLES ===== */
       @media print {
         body {
@@ -955,9 +918,8 @@
           padding: 0 !important;
         }
 
-        .header,
-        .search-box,
-        .filters,
+        .hero-header,
+        .sticky-wrapper,
         .footer-fixed,
         .more-menu,
         .toast {
@@ -966,8 +928,8 @@
 
         .print-sheet-header {
           display: block !important;
-          margin-bottom: 20px;
-          padding-bottom: 12px;
+          margin-bottom: 16px;
+          padding-bottom: 10px;
           border-bottom: 2px solid #000;
         }
 
@@ -1016,28 +978,28 @@
     <div class="container">
       <!-- Print Sheet Header -->
       <div class="print-sheet-header" id="printSheetHeader" style="display: none;">
-        <h2 style="font-size: 22px; margin-bottom: 5px;">Attendance Sheet - Loopify</h2>
-        <div style="font-size: 14px; line-height: 1.6;">
+        <h2 style="font-size: 20px; margin-bottom: 4px;">Attendance Sheet - Loopify</h2>
+        <div style="font-size: 13px; line-height: 1.5;">
           <div><strong>Course:</strong> <span id="printCourseName"></span></div>
           <div><strong>Date:</strong> <span id="printDateName"></span></div>
           <div><strong>Summary:</strong> <span id="printSummary"></span></div>
         </div>
       </div>
 
-      <!-- Header Section -->
-      <header class="header">
-        <div class="header-content">
-          <div class="header-top">
+      <!-- 1. ORIGINAL FULL HERO HEADER (VISIBLE AT TOP OF PAGE) -->
+      <header class="hero-header" id="heroHeader">
+        <div class="hero-header-content">
+          <div class="hero-header-top">
             <div>
-              <h1>Loopify 💕</h1>
-              <p>By Momenur Rashid</p>
-              <div class="date-text" id="headerDate"></div>
+              <h1 class="hero-title">Loopify 💕</h1>
+              <p class="hero-subtitle">By Momenur Rashid</p>
+              <div class="hero-date-text" id="heroFullDate"></div>
             </div>
             <button
               class="theme-btn"
               type="button"
               onclick="toggleTheme()"
-              id="themeButton"
+              id="themeButtonHero"
               title="Toggle Dark/Light Mode"
               aria-label="Toggle Theme"
             >
@@ -1046,75 +1008,113 @@
           </div>
 
           <!-- Course Selector -->
-          <div class="course-bar">
-            <label for="courseSelect">📚 Course:</label>
-            <select id="courseSelect" onchange="onCourseChange()" aria-label="Select Course">
-              <!-- Populated dynamically via JavaScript -->
+          <div class="hero-course-bar">
+            <label for="heroCourseSelect">📚 Course:</label>
+            <select id="heroCourseSelect" onchange="onCourseSelectChange(this.value)" aria-label="Select Course">
+              <!-- Populated via JS -->
             </select>
           </div>
 
-          <!-- Live Summary -->
-          <div class="live-summary">
-            <div class="live-summary-status">
+          <!-- Live Attendance Summary -->
+          <div class="hero-live-summary">
+            <div class="hero-live-status">
               <span class="live-dot"></span>
-              <span id="attendanceStatus">Ready to Take Attendance</span>
+              <span id="heroAttendanceStatus">Ready to Take Attendance</span>
             </div>
             <strong>
-              <span id="headerPresent">0</span> /
-              <span id="headerTotal">46</span> Present
+              <span id="heroPresent">0</span> / <span id="heroTotal">46</span> Present
             </strong>
           </div>
 
-          <!-- Progress Bar -->
-          <div class="header-progress">
-            <div class="header-progress-fill" id="headerProgressFill"></div>
+          <div class="hero-progress">
+            <div class="hero-progress-fill" id="heroProgressFill"></div>
           </div>
-          <div class="header-percentage" id="headerPercentage">0%</div>
+          <div class="hero-percentage" id="heroPercentage">0%</div>
 
           <!-- Date Selector -->
-          <div class="date-selector">
-            <button type="button" onclick="changeDate(-1)" aria-label="Previous Day" title="Previous Day">‹</button>
-            <div class="date-display" onclick="openDatePicker()" title="Click to pick specific date" id="dateDisplayContainer">
-              📅 <span id="dateDisplay"></span>
+          <div class="hero-date-selector">
+            <button type="button" class="date-nav-btn" onclick="changeDate(-1)" aria-label="Previous Day" title="Previous Day">‹</button>
+            <div class="hero-date-display" onclick="openDatePicker()" title="Click to pick specific date">
+              📅 <span id="heroDateDisplay"></span>
             </div>
-            <button type="button" onclick="changeDate(1)" aria-label="Next Day" title="Next Day">›</button>
-            <input
-              type="date"
-              id="datePicker"
-              onchange="loadSelectedDate()"
-              aria-label="Select Date"
-            />
+            <button type="button" class="date-nav-btn" onclick="changeDate(1)" aria-label="Next Day" title="Next Day">›</button>
           </div>
         </div>
       </header>
 
-      <!-- Search & Filters -->
-      <section class="search-box">
-        <div class="search-wrapper">
-          <span class="search-icon">🔍</span>
-          <input
-            type="text"
-            id="searchInput"
-            placeholder="Search by ID or student name..."
-            oninput="searchStudents()"
-            aria-label="Search students"
-          />
+      <!-- 2. STICKY LOCKED HEADER (EXPANDS INTO COMPACT BAR WHEN SCROLLED) -->
+      <div class="sticky-wrapper" id="stickyWrapper">
+        <div class="compact-sticky-header" id="compactStickyHeader">
+          <div class="compact-main-row">
+            <div class="compact-brand-course">
+              <span class="compact-logo">Loopify 💕</span>
+              <div class="compact-select-box">
+                <select id="compactCourseSelect" onchange="onCourseSelectChange(this.value)" aria-label="Select Course">
+                  <!-- Populated via JS -->
+                </select>
+              </div>
+            </div>
+            <div class="compact-right-stats">
+              <div class="compact-stat-pill" title="Present / Total">
+                <span class="live-dot"></span>
+                <span id="compactPresent">0</span>/<span id="compactTotal">46</span>
+                <span id="compactPercentage" style="opacity:0.85;">0%</span>
+              </div>
+              <button
+                class="theme-btn"
+                type="button"
+                style="width: 26px; height: 26px; font-size: 13px;"
+                onclick="toggleTheme()"
+                id="themeButtonCompact"
+                title="Toggle Theme"
+              >
+                🌙
+              </button>
+            </div>
+          </div>
+
+          <div class="compact-progress-line">
+            <div class="compact-progress-fill" id="compactProgressFill"></div>
+          </div>
+
+          <!-- Compact Sub Row: Date Navigation on Left, "Momenur" on Right -->
+          <div class="compact-sub-row">
+            <div class="compact-date-nav">
+              <button type="button" class="c-date-btn" onclick="changeDate(-1)">‹</button>
+              <div class="c-date-display" onclick="openDatePicker()">
+                📅 <span id="compactDateDisplay"></span>
+              </div>
+              <button type="button" class="c-date-btn" onclick="changeDate(1)">›</button>
+            </div>
+            <!-- Momenur badge placed in the empty space on right of date -->
+            <div class="compact-momenur-badge">Momenur Rashid</div>
+          </div>
         </div>
-      </section>
 
-      <nav class="filters" aria-label="Filter students">
-        <button class="filter-btn active" type="button" onclick="setFilter('all', this)">
-          All
-        </button>
-        <button class="filter-btn" type="button" onclick="setFilter('present', this)">
-          🟢 Present
-        </button>
-        <button class="filter-btn" type="button" onclick="setFilter('absent', this)">
-          🔴 Absent
-        </button>
-      </nav>
+        <!-- Search & Filter Bar (Always Locked with Sticky) -->
+        <div class="search-filter-bar">
+          <div class="search-wrap">
+            <span class="search-icon">🔍</span>
+            <input
+              type="text"
+              id="searchInput"
+              placeholder="Search ID or name..."
+              oninput="searchStudents()"
+              aria-label="Search students"
+            />
+          </div>
+          <div class="filter-tabs">
+            <button class="filter-pill active" type="button" onclick="setFilter('all', this)">All</button>
+            <button class="filter-pill" type="button" onclick="setFilter('present', this)">🟢 Present</button>
+            <button class="filter-pill" type="button" onclick="setFilter('absent', this)">🔴 Absent</button>
+          </div>
+        </div>
+      </div>
 
-      <!-- Student List -->
+      <!-- Native Date Picker Input (Hidden trigger) -->
+      <input type="date" id="datePicker" onchange="loadSelectedDate()" aria-label="Select Date" style="position: absolute; opacity: 0; width: 0; height: 0; pointer-events: none;" />
+
+      <!-- Student List (Maximum Display Room) -->
       <main class="student-list">
         <div class="list-header">
           <div>#</div>
@@ -1125,7 +1125,7 @@
         <div id="studentList"></div>
       </main>
 
-      <!-- Fixed Floating Footer -->
+      <!-- Fixed Compact Footer -->
       <footer class="footer-fixed">
         <div class="footer-fixed-inner">
           <div class="footer-controls">
@@ -1269,7 +1269,8 @@
       const studentList = document.getElementById("studentList");
       const datePicker = document.getElementById("datePicker");
       const output = document.getElementById("output");
-      const courseSelect = document.getElementById("courseSelect");
+      const heroCourseSelect = document.getElementById("heroCourseSelect");
+      const compactCourseSelect = document.getElementById("compactCourseSelect");
 
       // ===== DATE HELPERS (TIMEZONE SAFE) =====
       function formatDateLocal(d) {
@@ -1319,7 +1320,6 @@
         return courses[0];
       }
 
-      // Shared key for date: Switching course keeps marked students intact!
       function storageKey() {
         return `attendance_${currentDate}`;
       }
@@ -1344,26 +1344,35 @@
         }
       }
 
-      // ===== COURSE MANAGEMENT =====
+      // ===== COURSE MANAGEMENT (SYNCS BOTH EXPANDED & COMPACT DROPDOWNS) =====
       function populateCourses() {
-        if (!courseSelect) return;
-        courseSelect.innerHTML = "";
-        courses.forEach((c) => {
-          const opt = document.createElement("option");
-          opt.value = c;
-          opt.textContent = c;
-          if (c === currentCourse) opt.selected = true;
-          courseSelect.appendChild(opt);
+        const selects = [heroCourseSelect, compactCourseSelect];
+        selects.forEach((sel) => {
+          if (!sel) return;
+          sel.innerHTML = "";
+          courses.forEach((c) => {
+            const opt = document.createElement("option");
+            opt.value = c;
+            opt.textContent = c;
+            if (c === currentCourse) opt.selected = true;
+            sel.appendChild(opt);
+          });
         });
       }
 
-      function onCourseChange() {
-        currentCourse = courseSelect.value;
+      function onCourseSelectChange(val) {
+        currentCourse = val;
         try {
           localStorage.setItem("attendance_course", currentCourse);
         } catch (e) {}
 
-        // Keeps marked students intact
+        if (heroCourseSelect && heroCourseSelect.value !== val) {
+          heroCourseSelect.value = val;
+        }
+        if (compactCourseSelect && compactCourseSelect.value !== val) {
+          compactCourseSelect.value = val;
+        }
+
         saveAttendance();
         updateStats();
         updateOutputLive();
@@ -1373,10 +1382,16 @@
       // ===== DATE MANAGEMENT =====
       function updateDateDisplay() {
         if (datePicker) datePicker.value = currentDate;
-        const headerDate = document.getElementById("headerDate");
-        const dateDisplay = document.getElementById("dateDisplay");
-        if (headerDate) headerDate.textContent = formatFullDate(currentDate);
-        if (dateDisplay) dateDisplay.textContent = formatDisplayDate(currentDate);
+        const displayDate = formatDisplayDate(currentDate);
+        const fullDate = formatFullDate(currentDate);
+
+        const heroDate = document.getElementById("heroFullDate");
+        const heroDisplay = document.getElementById("heroDateDisplay");
+        const compactDisplay = document.getElementById("compactDateDisplay");
+
+        if (heroDate) heroDate.textContent = fullDate;
+        if (heroDisplay) heroDisplay.textContent = displayDate;
+        if (compactDisplay) compactDisplay.textContent = displayDate;
       }
 
       function loadSelectedDate() {
@@ -1409,7 +1424,20 @@
         datePicker.click();
       }
 
-      // ===== FAST IN-PLACE DOM UPDATE (NO DAKKHA / ZERO FLICKER) =====
+      // ===== SCROLL LISTENER: COMPACT HEADER LOCKS ON SCROLL =====
+      let isHeaderScrolled = false;
+      function onWindowScroll() {
+        const scrollY = window.scrollY || document.documentElement.scrollTop;
+        // When scrolled past ~40px, show compact locked header
+        const shouldBeScrolled = scrollY > 40;
+        if (shouldBeScrolled !== isHeaderScrolled) {
+          isHeaderScrolled = shouldBeScrolled;
+          document.body.classList.toggle("is-scrolled", isHeaderScrolled);
+        }
+      }
+      window.addEventListener("scroll", onWindowScroll, { passive: true });
+
+      // ===== FAST IN-PLACE DOM UPDATE (ZERO FLICKER) =====
       function applyAttendanceToDOM(id, isPresent) {
         const row = studentList.querySelector(`[data-id="${id}"]`);
         if (!row) return;
@@ -1430,7 +1458,6 @@
           checkbox.checked = isPresent;
         }
 
-        // If currently filtering, smooth hide/show without rebuilding list
         if (currentFilter === "present") {
           row.style.display = isPresent ? "" : "none";
         } else if (currentFilter === "absent") {
@@ -1470,7 +1497,7 @@
         updateStats();
       }
 
-      // ===== STUDENT RENDERING (ONLY WHEN NEEDED) =====
+      // ===== STUDENT RENDERING =====
       function renderStudents() {
         if (!studentList) return;
         studentList.innerHTML = "";
@@ -1496,7 +1523,7 @@
 
         if (!filtered.length) {
           studentList.innerHTML =
-            '<div class="empty-message">🔍 No students found matching your criteria.</div>';
+            '<div class="empty-message">🔍 No students found.</div>';
           updateStats();
           return;
         }
@@ -1544,20 +1571,33 @@
         const present = students.filter((s) => !!attendance[s.id]).length;
         const total = students.length;
         const percent = total ? (present / total) * 100 : 0;
+        const pctFormatted = percent.toFixed(0) + "%";
 
-        const headerPresent = document.getElementById("headerPresent");
-        const headerTotal = document.getElementById("headerTotal");
-        const headerPercent = document.getElementById("headerPercentage");
-        const headerProgress = document.getElementById("headerProgressFill");
-        const headerStatus = document.getElementById("attendanceStatus");
+        // Update Hero elements
+        const heroPresent = document.getElementById("heroPresent");
+        const heroTotal = document.getElementById("heroTotal");
+        const heroPercentage = document.getElementById("heroPercentage");
+        const heroProgressFill = document.getElementById("heroProgressFill");
+        const heroStatus = document.getElementById("heroAttendanceStatus");
 
-        if (headerPresent) headerPresent.textContent = present;
-        if (headerTotal) headerTotal.textContent = total;
-        if (headerPercent) headerPercent.textContent = percent.toFixed(1) + "%";
-        if (headerProgress) headerProgress.style.width = percent + "%";
+        if (heroPresent) heroPresent.textContent = present;
+        if (heroTotal) heroTotal.textContent = total;
+        if (heroPercentage) heroPercentage.textContent = pctFormatted;
+        if (heroProgressFill) heroProgressFill.style.width = percent + "%";
 
-        if (headerStatus) {
-          headerStatus.textContent =
+        // Update Compact sticky elements
+        const compactPresent = document.getElementById("compactPresent");
+        const compactTotal = document.getElementById("compactTotal");
+        const compactPercentage = document.getElementById("compactPercentage");
+        const compactProgressFill = document.getElementById("compactProgressFill");
+
+        if (compactPresent) compactPresent.textContent = present;
+        if (compactTotal) compactTotal.textContent = total;
+        if (compactPercentage) compactPercentage.textContent = pctFormatted;
+        if (compactProgressFill) compactProgressFill.style.width = percent + "%";
+
+        if (heroStatus) {
+          heroStatus.textContent =
             present === total
               ? "Attendance Complete"
               : present > 0
@@ -1565,14 +1605,14 @@
                 : "Ready to Take Attendance";
         }
 
-        // Print header updates
+        // Print header
         const printCourseName = document.getElementById("printCourseName");
         const printDateName = document.getElementById("printDateName");
         const printSummary = document.getElementById("printSummary");
         if (printCourseName) printCourseName.textContent = currentCourse;
         if (printDateName) printDateName.textContent = formatFullDate(currentDate);
         if (printSummary)
-          printSummary.textContent = `${present} Present / ${total - present} Absent (${percent.toFixed(1)}%)`;
+          printSummary.textContent = `${present} Present / ${total - present} Absent (${pctFormatted})`;
 
         updateOutputLive();
       }
@@ -1584,7 +1624,7 @@
       function setFilter(f, btn) {
         currentFilter = f;
         document
-          .querySelectorAll(".filter-btn")
+          .querySelectorAll(".filter-pill")
           .forEach((x) => x.classList.remove("active"));
         if (btn) btn.classList.add("active");
         renderStudents();
@@ -1820,16 +1860,21 @@
         try {
           localStorage.setItem("attendance_theme", isDark ? "dark" : "light");
         } catch (e) {}
-        const themeBtn = document.getElementById("themeButton");
-        if (themeBtn) themeBtn.textContent = isDark ? "☀️" : "🌙";
+
+        const themeBtnHero = document.getElementById("themeButtonHero");
+        const themeBtnCompact = document.getElementById("themeButtonCompact");
+        if (themeBtnHero) themeBtnHero.textContent = isDark ? "☀️" : "🌙";
+        if (themeBtnCompact) themeBtnCompact.textContent = isDark ? "☀️" : "🌙";
       }
 
       function loadTheme() {
         try {
           if (localStorage.getItem("attendance_theme") === "dark") {
             document.body.classList.add("dark");
-            const themeBtn = document.getElementById("themeButton");
-            if (themeBtn) themeBtn.textContent = "☀️";
+            const themeBtnHero = document.getElementById("themeButtonHero");
+            const themeBtnCompact = document.getElementById("themeButtonCompact");
+            if (themeBtnHero) themeBtnHero.textContent = "☀️";
+            if (themeBtnCompact) themeBtnCompact.textContent = "☀️";
           }
         } catch (e) {}
       }
