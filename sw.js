@@ -1,4 +1,4 @@
-const CACHE_NAME = 'loopify-cache-v1';
+const CACHE_NAME = 'loopify-cache-v3';
 const ASSETS_TO_CACHE = [
   './',
   './index.html',
@@ -29,7 +29,6 @@ self.addEventListener('activate', (event) => {
 });
 
 self.addEventListener('fetch', (event) => {
-  // Only handle http/https GET requests
   if (event.request.method !== 'GET' || !event.request.url.startsWith('http')) return;
 
   event.respondWith(
@@ -46,7 +45,6 @@ self.addEventListener('fetch', (event) => {
         }
         return networkResponse;
       }).catch(() => {
-        // Fallback for navigation when offline
         if (event.request.mode === 'navigate') {
           return caches.match('./index.html') || caches.match('./');
         }

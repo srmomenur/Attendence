@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <meta name="theme-color" content="#2563eb" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
@@ -10,6 +10,15 @@
     <link rel="manifest" href="manifest.json" />
     <link rel="icon" type="image/svg+xml" href="icon.svg" />
     <link rel="apple-touch-icon" href="icon.svg" />
+
+    <!-- Google Modern Font: Plus Jakarta Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+
     <title>Loopify - Smart Attendance Manager</title>
     <style>
       *,
@@ -18,15 +27,21 @@
         box-sizing: border-box;
         margin: 0;
         padding: 0;
+        -webkit-tap-highlight-color: transparent;
       }
 
       :root {
+        --font-main: "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont,
+          "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
         --primary: #2563eb;
+        --primary-glow: rgba(37, 99, 235, 0.28);
         --primary-dark: #1d4ed8;
         --primary2: #4f46e5;
         --success: #16a34a;
-        --success-bg: rgba(22, 163, 74, 0.09);
+        --success-glow: rgba(22, 163, 74, 0.25);
+        --success-bg: rgba(22, 163, 74, 0.08);
         --danger: #dc2626;
+        --danger-glow: rgba(220, 38, 38, 0.2);
         --danger-bg: rgba(220, 38, 38, 0.08);
         --bg: #f8fafc;
         --card: #ffffff;
@@ -34,38 +49,42 @@
         --text: #0f172a;
         --muted: #64748b;
         --border: #e2e8f0;
-        --header-gradient: linear-gradient(135deg, #2563eb, #4f46e5, #7c3aed);
-        --footer-bg: rgba(255, 255, 255, 0.94);
+        --header-gradient: linear-gradient(135deg, #2563eb, #4f46e5 50%, #7c3aed);
+        --footer-bg: rgba(255, 255, 255, 0.92);
         --footer-shadow: 0 -10px 25px rgba(15, 23, 42, 0.08);
+        --radius-lg: 18px;
+        --radius-md: 13px;
+        --radius-sm: 9px;
       }
 
       body.dark {
-        --bg: #0b1120;
-        --card: #151e32;
-        --card-hover: rgba(59, 130, 246, 0.07);
+        --bg: #090d16;
+        --card: #131b2e;
+        --card-hover: rgba(59, 130, 246, 0.06);
         --text: #f8fafc;
         --muted: #94a3b8;
         --border: #1e293b;
-        --header-gradient: linear-gradient(135deg, #1e40af, #3730a3, #581c87);
-        --footer-bg: rgba(21, 30, 50, 0.94);
-        --footer-shadow: 0 -10px 25px rgba(0, 0, 0, 0.35);
+        --header-gradient: linear-gradient(135deg, #1d4ed8, #3730a3 50%, #6d28d9);
+        --footer-bg: rgba(19, 27, 46, 0.92);
+        --footer-shadow: 0 -10px 25px rgba(0, 0, 0, 0.45);
       }
 
       body {
-        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
-          Ubuntu, Cantarell, "Helvetica Neue", Arial, sans-serif;
+        font-family: var(--font-main);
         background-color: var(--bg);
         color: var(--text);
         min-height: 100vh;
-        padding: 20px 14px 210px;
+        padding: 20px 14px 220px;
         transition: background-color 0.25s ease, color 0.25s ease;
         -webkit-font-smoothing: antialiased;
+        overflow-x: hidden;
       }
 
       button,
       input,
-      select {
-        font-family: inherit;
+      select,
+      textarea {
+        font-family: var(--font-main);
       }
 
       button {
@@ -84,10 +103,10 @@
         position: relative;
         background: var(--header-gradient);
         color: #ffffff;
-        border-radius: 18px;
+        border-radius: var(--radius-lg);
         padding: 20px 22px;
         margin-bottom: 12px;
-        box-shadow: 0 12px 30px rgba(37, 99, 235, 0.2);
+        box-shadow: 0 12px 30px var(--primary-glow);
         overflow: hidden;
       }
 
@@ -116,63 +135,81 @@
       }
 
       .header h1 {
-        font-size: 24px;
+        font-size: 25px;
         font-weight: 800;
         letter-spacing: -0.5px;
-      }
-
-      .header p {
-        font-size: 12px;
-        opacity: 0.88;
-        margin-top: 2px;
-      }
-
-      .date-text {
-        font-size: 11px;
-        opacity: 0.8;
-        margin-top: 3px;
-      }
-
-      .theme-btn {
-        width: 40px;
-        height: 40px;
-        border: 0;
-        border-radius: 50%;
-        background: rgba(255, 255, 255, 0.18);
-        color: #ffffff;
-        font-size: 18px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        transition: transform 0.2s, background-color 0.2s;
-      }
-
-      .theme-btn:hover {
-        transform: rotate(18deg) scale(1.08);
-        background: rgba(255, 255, 255, 0.26);
-      }
-
-      /* ===== COURSE SELECTOR ===== */
-      .course-bar {
-        margin-top: 12px;
         display: flex;
         align-items: center;
         gap: 8px;
-        background: rgba(255, 255, 255, 0.16);
-        border: 1px solid rgba(255, 255, 255, 0.22);
-        border-radius: 12px;
-        padding: 7px 12px;
+      }
+
+      .header p {
+        font-size: 13px;
+        opacity: 0.9;
+        margin-top: 2px;
+        font-weight: 500;
+      }
+
+      .date-text {
+        font-size: 12px;
+        opacity: 0.85;
+        margin-top: 3px;
+        font-weight: 500;
+      }
+
+      .theme-btn {
+        width: 42px;
+        height: 42px;
+        border: 0;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.2);
+        backdrop-filter: blur(8px);
+        color: #ffffff;
+        font-size: 19px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+        transition: transform 0.2s ease, background-color 0.2s ease;
+      }
+
+      .theme-btn:hover {
+        transform: rotate(20deg) scale(1.08);
+        background: rgba(255, 255, 255, 0.3);
+      }
+
+      .theme-btn:active {
+        transform: scale(0.94);
+      }
+
+      /* ===== COURSE SELECTOR BAR ===== */
+      .course-bar {
+        margin-top: 13px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        background: rgba(255, 255, 255, 0.18);
+        border: 1px solid rgba(255, 255, 255, 0.26);
+        border-radius: var(--radius-md);
+        padding: 8px 12px;
         backdrop-filter: blur(10px);
+        transition: background-color 0.2s ease;
+      }
+
+      .course-bar:focus-within {
+        background: rgba(255, 255, 255, 0.26);
+        border-color: rgba(255, 255, 255, 0.4);
       }
 
       .course-bar label {
-        font-size: 12px;
-        font-weight: 700;
+        font-size: 13.5px;
+        font-weight: 800;
         color: #ffffff;
         white-space: nowrap;
         display: flex;
         align-items: center;
-        gap: 4px;
+        gap: 5px;
+        letter-spacing: 0.2px;
       }
 
       .course-bar select {
@@ -181,7 +218,7 @@
         color: #ffffff;
         border: 0;
         outline: 0;
-        font-size: 13px;
+        font-size: 14.5px;
         font-weight: 700;
         cursor: pointer;
       }
@@ -189,8 +226,9 @@
       .course-bar select option {
         background: var(--card);
         color: var(--text);
-        font-size: 13px;
+        font-size: 14px;
         font-weight: 600;
+        padding: 8px;
       }
 
       /* ===== LIVE SUMMARY & PROGRESS ===== */
@@ -198,31 +236,30 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
-        margin-top: 12px;
-        font-size: 12px;
+        margin-top: 13px;
+        font-size: 13px;
       }
 
       .live-summary-status {
         display: flex;
         align-items: center;
-        gap: 7px;
+        gap: 8px;
         opacity: 0.95;
       }
 
       .live-dot {
-        width: 8px;
-        height: 8px;
+        width: 9px;
+        height: 9px;
         border-radius: 50%;
         background: #4ade80;
-        box-shadow: 0 0 0 4px rgba(74, 222, 128, 0.18);
-        animation: pulseDot 1.8s infinite;
+        box-shadow: 0 0 0 4px rgba(74, 222, 128, 0.2);
+        animation: pulseLiveDot 2.2s infinite ease-in-out;
       }
 
-      @keyframes pulseDot {
-        0%,
-        100% {
+      @keyframes pulseLiveDot {
+        0%, 100% {
           transform: scale(1);
-          box-shadow: 0 0 0 4px rgba(74, 222, 128, 0.18);
+          box-shadow: 0 0 0 4px rgba(74, 222, 128, 0.2);
         }
         50% {
           transform: scale(1.1);
@@ -231,16 +268,16 @@
       }
 
       .live-summary strong {
-        font-size: 13px;
+        font-size: 14.5px;
         font-weight: 800;
       }
 
       .header-progress {
-        height: 7px;
-        background: rgba(255, 255, 255, 0.2);
+        height: 8px;
+        background: rgba(255, 255, 255, 0.22);
         border-radius: 20px;
         overflow: hidden;
-        margin-top: 8px;
+        margin-top: 9px;
       }
 
       .header-progress-fill {
@@ -248,14 +285,14 @@
         width: 0%;
         border-radius: 20px;
         background: #ffffff;
-        transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        transition: width 0.35s cubic-bezier(0.16, 1, 0.3, 1);
       }
 
       .header-percentage {
         text-align: right;
-        font-size: 11px;
+        font-size: 12px;
         font-weight: 800;
-        margin-top: 4px;
+        margin-top: 5px;
         opacity: 0.95;
       }
 
@@ -269,21 +306,22 @@
       }
 
       .date-selector button {
-        width: 36px;
-        height: 36px;
+        width: 38px;
+        height: 38px;
         border: 0;
-        border-radius: 10px;
-        background: rgba(255, 255, 255, 0.18);
+        border-radius: var(--radius-sm);
+        background: rgba(255, 255, 255, 0.2);
         color: #ffffff;
-        font-size: 18px;
+        font-size: 19px;
+        font-weight: 700;
         display: flex;
         align-items: center;
         justify-content: center;
-        transition: transform 0.15s, background-color 0.15s;
+        transition: transform 0.15s ease, background-color 0.15s ease;
       }
 
       .date-selector button:hover {
-        background: rgba(255, 255, 255, 0.28);
+        background: rgba(255, 255, 255, 0.3);
         transform: scale(1.05);
       }
 
@@ -293,25 +331,21 @@
 
       .date-display {
         flex: 1;
-        height: 36px;
-        border-radius: 10px;
-        background: rgba(255, 255, 255, 0.18);
+        height: 38px;
+        border-radius: var(--radius-sm);
+        background: rgba(255, 255, 255, 0.2);
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 13px;
-        font-weight: 700;
+        font-size: 14.5px;
+        font-weight: 800;
         cursor: pointer;
-        transition: background-color 0.15s, transform 0.15s;
+        transition: background-color 0.15s ease;
         user-select: none;
       }
 
       .date-display:hover {
-        background: rgba(255, 255, 255, 0.28);
-      }
-
-      .date-display:active {
-        transform: scale(0.98);
+        background: rgba(255, 255, 255, 0.3);
       }
 
       .date-selector input[type="date"] {
@@ -325,11 +359,17 @@
       /* ===== SEARCH & FILTERS ===== */
       .search-box {
         background: var(--card);
-        padding: 8px 10px;
-        border-radius: 14px;
+        padding: 8px 12px;
+        border-radius: var(--radius-md);
         margin-bottom: 10px;
         border: 1px solid var(--border);
-        box-shadow: 0 4px 14px rgba(0, 0, 0, 0.03);
+        box-shadow: 0 3px 12px rgba(0, 0, 0, 0.03);
+        transition: border-color 0.2s ease, box-shadow 0.2s ease;
+      }
+
+      .search-box:focus-within {
+        border-color: var(--primary);
+        box-shadow: 0 4px 18px var(--primary-glow);
       }
 
       .search-wrapper {
@@ -341,32 +381,33 @@
       .search-icon {
         position: absolute;
         left: 12px;
-        font-size: 16px;
+        font-size: 17px;
         opacity: 0.6;
         pointer-events: none;
       }
 
       .search-box input {
         width: 100%;
-        height: 42px;
+        height: 44px;
         border: 1px solid var(--border);
-        border-radius: 10px;
-        padding: 0 14px 0 38px;
-        font-size: 13px;
+        border-radius: var(--radius-sm);
+        padding: 0 16px 0 42px;
+        font-size: 14px;
+        font-weight: 600;
         outline: 0;
         background: var(--bg);
         color: var(--text);
-        transition: border-color 0.2s, box-shadow 0.2s;
+        transition: border-color 0.2s ease, background-color 0.2s ease;
       }
 
       .search-box input:focus {
         border-color: var(--primary);
-        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+        background: var(--card);
       }
 
       .filters {
         display: flex;
-        gap: 7px;
+        gap: 8px;
         margin-bottom: 12px;
         overflow-x: auto;
         scrollbar-width: none;
@@ -382,10 +423,10 @@
         background: var(--card);
         color: var(--muted);
         border-radius: 20px;
-        padding: 7px 14px;
-        font-size: 11px;
-        font-weight: 700;
-        transition: all 0.15s ease;
+        padding: 8px 16px;
+        font-size: 12.5px;
+        font-weight: 800;
+        transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
       }
 
       .filter-btn.active {
@@ -399,10 +440,10 @@
         color: var(--primary);
       }
 
-      /* ===== STUDENT LIST ===== */
+      /* ===== STUDENT LIST (ROCK-SOLID STABILITY - NO JUMP / NO DAKKHA) ===== */
       .student-list {
         background: var(--card);
-        border-radius: 16px;
+        border-radius: var(--radius-lg);
         overflow: hidden;
         border: 1px solid var(--border);
         box-shadow: 0 6px 20px rgba(0, 0, 0, 0.04);
@@ -411,29 +452,32 @@
 
       .list-header {
         display: grid;
-        grid-template-columns: 36px 62px 1fr 65px;
-        gap: 8px;
+        grid-template-columns: 42px 70px 1fr 65px;
+        gap: 10px;
         align-items: center;
-        padding: 12px 14px;
-        background: rgba(37, 99, 235, 0.05);
+        padding: 13px 18px;
+        background: rgba(37, 99, 235, 0.04);
         border-bottom: 1px solid var(--border);
-        font-size: 11px;
+        font-size: 12px;
         font-weight: 800;
         color: var(--muted);
         text-transform: uppercase;
         letter-spacing: 0.5px;
       }
 
+      /* Notice: Absolutely NO transform scale / translate on student row! */
       .student {
         display: grid;
-        grid-template-columns: 36px 62px 1fr 65px;
-        gap: 8px;
+        grid-template-columns: 42px 70px 1fr 65px;
+        gap: 10px;
         align-items: center;
-        padding: 12px 14px;
+        padding: 13px 18px;
         border-bottom: 1px solid var(--border);
-        transition: background-color 0.16s ease;
+        transition: background-color 0.15s ease, box-shadow 0.15s ease;
         cursor: pointer;
         user-select: none;
+        /* Stable inset indicator avoids 4px border content jumping */
+        box-shadow: inset 0 0 0 transparent;
       }
 
       .student:last-child {
@@ -446,38 +490,40 @@
 
       .student.present {
         background-color: var(--success-bg);
+        box-shadow: inset 4px 0 0 var(--success);
       }
 
       .serial {
         color: var(--muted);
-        font-size: 11px;
-        font-weight: 600;
+        font-size: 13px;
+        font-weight: 700;
       }
 
       .student-id {
-        font-size: 14px;
-        font-weight: 800;
+        font-size: 16px;
+        font-weight: 900;
         color: var(--primary);
         letter-spacing: 0.3px;
+        font-variant-numeric: tabular-nums;
       }
 
       .student-name {
-        font-size: 13px;
+        font-size: 15px;
         font-weight: 700;
-        line-height: 1.3;
+        line-height: 1.35;
       }
 
       .status-text {
-        font-size: 9px;
+        font-size: 10.5px;
         margin-top: 2px;
         color: var(--muted);
-        font-weight: 600;
+        font-weight: 800;
         text-transform: uppercase;
+        letter-spacing: 0.4px;
       }
 
       .student.present .status-text {
         color: var(--success);
-        font-weight: 800;
       }
 
       .check-area {
@@ -489,64 +535,52 @@
       .check-area input[type="checkbox"] {
         appearance: none;
         -webkit-appearance: none;
-        width: 26px;
-        height: 26px;
+        width: 28px;
+        height: 28px;
         border: 2px solid #cbd5e1;
         border-radius: 8px;
         cursor: pointer;
         position: relative;
         background: var(--card);
-        transition: all 0.18s ease;
+        transition: background-color 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+      }
+
+      body.dark .check-area input[type="checkbox"] {
+        border-color: #334155;
       }
 
       .check-area input[type="checkbox"]:checked {
         background: var(--success);
         border-color: var(--success);
-        box-shadow: 0 0 10px rgba(22, 163, 74, 0.35);
+        box-shadow: 0 0 8px var(--success-glow);
       }
 
       .check-area input[type="checkbox"]:checked::after {
         content: "✓";
         color: #ffffff;
-        font-size: 16px;
+        font-size: 17px;
         font-weight: 900;
         position: absolute;
         left: 5px;
-        top: -1px;
-      }
-
-      .check-area input.just-tapped {
-        animation: checkTap 0.22s ease;
-      }
-
-      @keyframes checkTap {
-        0% {
-          transform: scale(0.85);
-        }
-        60% {
-          transform: scale(1.15);
-        }
-        100% {
-          transform: scale(1);
-        }
+        top: 0px;
       }
 
       .empty-message {
         text-align: center;
-        padding: 40px 15px;
+        padding: 45px 18px;
         color: var(--muted);
-        font-size: 14px;
-        font-weight: 600;
+        font-size: 14.5px;
+        font-weight: 700;
       }
 
-      /* ===== FIXED FOOTER ===== */
+      /* ===== FIXED FLOATING FOOTER ===== */
       .footer-fixed {
         position: fixed;
         left: 0;
         right: 0;
         bottom: 0;
         z-index: 1000;
-        padding: 10px 14px calc(10px + env(safe-area-inset-bottom));
+        padding: 10px 16px calc(10px + env(safe-area-inset-bottom));
         background: var(--footer-bg);
         backdrop-filter: blur(16px);
         -webkit-backdrop-filter: blur(16px);
@@ -568,31 +602,26 @@
       }
 
       .action-button {
-        min-height: 40px;
+        min-height: 42px;
         border: 1px solid var(--border);
-        border-radius: 11px;
-        font-size: 12px;
+        border-radius: var(--radius-sm);
+        font-size: 13.5px;
         font-weight: 800;
         display: flex;
         align-items: center;
         justify-content: center;
         gap: 6px;
-        transition: transform 0.15s, background-color 0.15s, box-shadow 0.15s;
-      }
-
-      .action-button:hover {
-        transform: translateY(-1px);
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-      }
-
-      .action-button:active {
-        transform: scale(0.97);
+        transition: background-color 0.15s ease, border-color 0.15s ease;
       }
 
       .reset-btn {
         background: var(--danger-bg);
         color: var(--danger);
-        border-color: rgba(220, 38, 38, 0.18);
+        border-color: rgba(220, 38, 38, 0.2);
+      }
+
+      .reset-btn:hover {
+        background: rgba(220, 38, 38, 0.14);
       }
 
       .more-btn {
@@ -608,36 +637,24 @@
         bottom: 100%;
         margin-bottom: 8px;
         z-index: 1100;
-        min-width: 220px;
+        min-width: 230px;
         padding: 6px;
         background: var(--card);
         border: 1px solid var(--border);
-        border-radius: 14px;
+        border-radius: var(--radius-md);
         box-shadow: 0 12px 35px rgba(0, 0, 0, 0.18);
-        animation: menuPopup 0.2s cubic-bezier(0.16, 1, 0.3, 1);
       }
 
       .more-menu.show {
         display: block;
       }
 
-      @keyframes menuPopup {
-        from {
-          opacity: 0;
-          transform: translateY(10px) scale(0.96);
-        }
-        to {
-          opacity: 1;
-          transform: translateY(0) scale(1);
-        }
-      }
-
       .more-menu-header {
-        font-size: 10px;
+        font-size: 11px;
         font-weight: 800;
         color: var(--muted);
         text-transform: uppercase;
-        padding: 8px 10px 4px;
+        padding: 8px 12px 4px;
         letter-spacing: 0.5px;
       }
 
@@ -651,10 +668,10 @@
         color: var(--text);
         text-align: left;
         padding: 10px 12px;
-        border-radius: 9px;
-        font-size: 12px;
+        border-radius: var(--radius-sm);
+        font-size: 13.5px;
         font-weight: 700;
-        transition: background-color 0.15s;
+        transition: background-color 0.15s ease, color 0.15s ease;
       }
 
       .more-menu button:hover {
@@ -662,19 +679,11 @@
         color: var(--primary);
       }
 
-      .more-menu button.danger {
-        color: var(--danger);
-      }
-
-      .more-menu button.danger:hover {
-        background: var(--danger-bg);
-      }
-
-      /* ===== OUTPUT BOX ===== */
+      /* ===== OUTPUT PREVIEW BOX ===== */
       .footer-output {
         background: var(--card);
         border: 1px solid var(--border);
-        border-radius: 13px;
+        border-radius: var(--radius-md);
         overflow: hidden;
       }
 
@@ -682,12 +691,12 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
-        padding: 8px 12px;
+        padding: 9px 12px;
         border-bottom: 1px solid var(--border);
       }
 
       .output-title h2 {
-        font-size: 12px;
+        font-size: 13px;
         font-weight: 800;
         display: flex;
         align-items: center;
@@ -702,35 +711,30 @@
         height: 20px;
         padding: 0 6px;
         border-radius: 10px;
-        background: rgba(37, 99, 235, 0.1);
+        background: rgba(37, 99, 235, 0.12);
         color: var(--primary);
-        font-size: 10px;
+        font-size: 11px;
         font-weight: 800;
       }
 
       .copy-btn {
         border: 0;
-        background: var(--text);
-        color: var(--card);
-        border-radius: 8px;
-        padding: 6px 14px;
-        font-size: 11px;
+        background: var(--primary);
+        color: #ffffff;
+        border-radius: var(--radius-sm);
+        padding: 6px 16px;
+        font-size: 12.5px;
         font-weight: 800;
-        transition: transform 0.15s, opacity 0.15s;
+        transition: background-color 0.15s ease;
       }
 
       .copy-btn:hover {
-        opacity: 0.9;
-        transform: translateY(-1px);
-      }
-
-      .copy-btn:active {
-        transform: scale(0.96);
+        background: var(--primary-dark);
       }
 
       .output-box {
         max-height: 95px;
-        min-height: 48px;
+        min-height: 50px;
         overflow-y: auto;
         padding: 8px 12px;
         background: var(--bg);
@@ -740,15 +744,16 @@
         margin: 0;
         white-space: pre-wrap;
         font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-        font-size: 12px;
-        line-height: 1.5;
-        font-weight: 600;
+        font-size: 13px;
+        line-height: 1.55;
+        font-weight: 700;
         color: var(--text);
       }
 
       .output-placeholder {
         color: var(--muted);
-        font-size: 11px;
+        font-size: 12px;
+        font-weight: 600;
         padding: 4px 0;
       }
 
@@ -760,13 +765,13 @@
         transform: translate(-50%, 80px);
         background: #0f172a;
         color: #ffffff;
-        padding: 10px 18px;
+        padding: 10px 20px;
         border-radius: 12px;
-        font-size: 12px;
+        font-size: 13px;
         font-weight: 700;
         z-index: 99999;
         opacity: 0;
-        transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s ease;
+        transition: transform 0.25s ease, opacity 0.25s ease;
         box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
         pointer-events: none;
       }
@@ -782,153 +787,163 @@
         opacity: 1;
       }
 
-      /* ===== RESPONSIVE STYLES (MOBILE) ===== */
+      /* ===== MOBILE RESPONSIVE ===== */
       @media (max-width: 600px) {
         body {
-          padding: 12px 8px 190px;
+          padding: 12px 10px 195px;
         }
 
         .header {
-          padding: 14px 14px;
-          border-radius: 15px;
+          padding: 15px 15px;
+          border-radius: 16px;
+          margin-bottom: 10px;
         }
 
         .header h1 {
-          font-size: 18px;
+          font-size: 21px;
         }
 
         .header p {
-          font-size: 10px;
+          font-size: 11.5px;
         }
 
         .date-text {
-          font-size: 9px;
+          font-size: 10.5px;
         }
 
         .theme-btn {
-          width: 34px;
-          height: 34px;
-          font-size: 15px;
+          width: 38px;
+          height: 38px;
+          font-size: 17px;
         }
 
         .course-bar {
-          margin-top: 9px;
-          padding: 6px 10px;
+          margin-top: 10px;
+          padding: 7px 11px;
         }
 
         .course-bar label {
-          font-size: 11px;
+          font-size: 12px;
         }
 
         .course-bar select {
-          font-size: 11px;
+          font-size: 13px;
         }
 
         .live-summary {
-          font-size: 10px;
-          margin-top: 9px;
+          font-size: 11.5px;
+          margin-top: 10px;
         }
 
         .live-summary strong {
-          font-size: 11px;
+          font-size: 12.5px;
         }
 
         .header-progress {
-          height: 5px;
-          margin-top: 6px;
+          height: 6px;
+          margin-top: 7px;
         }
 
         .header-percentage {
-          font-size: 9px;
+          font-size: 10.5px;
         }
 
         .date-selector {
-          margin-top: 9px;
+          margin-top: 10px;
           gap: 6px;
         }
 
         .date-selector button {
-          width: 30px;
-          height: 30px;
-          border-radius: 8px;
-          font-size: 15px;
+          width: 34px;
+          height: 34px;
+          font-size: 17px;
         }
 
         .date-display {
-          height: 30px;
-          font-size: 11px;
-          border-radius: 8px;
+          height: 34px;
+          font-size: 12.5px;
         }
 
         .search-box {
-          padding: 6px 8px;
+          padding: 6px 10px;
+          margin-bottom: 8px;
         }
 
         .search-box input {
-          height: 36px;
-          font-size: 12px;
-          padding-left: 32px;
+          height: 38px;
+          font-size: 13.5px;
+          padding-left: 36px;
         }
 
         .search-icon {
-          left: 10px;
-          font-size: 14px;
+          left: 11px;
+          font-size: 16px;
+        }
+
+        .filters {
+          gap: 6px;
+          margin-bottom: 10px;
         }
 
         .filter-btn {
-          padding: 6px 10px;
-          font-size: 10px;
+          padding: 7px 14px;
+          font-size: 11.5px;
+        }
+
+        .student-list {
+          border-radius: 14px;
+          margin-bottom: 12px;
         }
 
         .list-header,
         .student {
-          grid-template-columns: 28px 50px 1fr 50px;
-          gap: 6px;
-          padding: 10px 10px;
+          grid-template-columns: 34px 58px 1fr 54px;
+          gap: 8px;
+          padding: 12px 12px;
         }
 
         .list-header {
-          font-size: 9px;
+          font-size: 10.5px;
         }
 
         .serial {
-          font-size: 10px;
-        }
-
-        .student-id {
           font-size: 12px;
         }
 
+        .student-id {
+          font-size: 15px;
+        }
+
         .student-name {
-          font-size: 11px;
+          font-size: 14.5px;
         }
 
         .status-text {
-          font-size: 8px;
+          font-size: 9.5px;
         }
 
         .check-area input[type="checkbox"] {
-          width: 24px;
-          height: 24px;
+          width: 27px;
+          height: 27px;
         }
 
         .footer-fixed {
-          padding: 8px 10px calc(8px + env(safe-area-inset-bottom));
+          padding: 9px 12px calc(9px + env(safe-area-inset-bottom));
         }
 
         .action-button {
-          min-height: 36px;
-          font-size: 11px;
+          min-height: 38px;
+          font-size: 12.5px;
         }
 
         .output-box {
-          max-height: 75px;
+          max-height: 76px;
           min-height: 42px;
-          padding: 6px 10px;
+          padding: 7px 11px;
         }
 
         .output-box pre {
-          font-size: 11px;
+          font-size: 12px;
         }
       }
 
@@ -980,10 +995,6 @@
           print-color-adjust: exact;
         }
 
-        .check-area {
-          font-weight: 800;
-        }
-
         .check-area input {
           display: none !important;
         }
@@ -995,6 +1006,7 @@
         .student.present .check-area::after {
           content: "✓ PRESENT";
           color: #16a34a;
+          font-weight: bold;
         }
       }
     </style>
@@ -1002,10 +1014,10 @@
 
   <body>
     <div class="container">
-      <!-- Print Only Header -->
+      <!-- Print Sheet Header -->
       <div class="print-sheet-header" id="printSheetHeader" style="display: none;">
-        <h2 style="font-size: 20px; margin-bottom: 4px;">Attendance Sheet - Loopify</h2>
-        <div style="font-size: 13px; line-height: 1.6;">
+        <h2 style="font-size: 22px; margin-bottom: 5px;">Attendance Sheet - Loopify</h2>
+        <div style="font-size: 14px; line-height: 1.6;">
           <div><strong>Course:</strong> <span id="printCourseName"></span></div>
           <div><strong>Date:</strong> <span id="printDateName"></span></div>
           <div><strong>Summary:</strong> <span id="printSummary"></span></div>
@@ -1037,7 +1049,7 @@
           <div class="course-bar">
             <label for="courseSelect">📚 Course:</label>
             <select id="courseSelect" onchange="onCourseChange()" aria-label="Select Course">
-              <!-- Courses populated dynamically via JavaScript -->
+              <!-- Populated dynamically via JavaScript -->
             </select>
           </div>
 
@@ -1113,7 +1125,7 @@
         <div id="studentList"></div>
       </main>
 
-      <!-- Fixed Bottom Footer Controls -->
+      <!-- Fixed Floating Footer -->
       <footer class="footer-fixed">
         <div class="footer-fixed-inner">
           <div class="footer-controls">
@@ -1130,7 +1142,7 @@
             </button>
           </div>
 
-          <!-- More Options Dropdown Menu -->
+          <!-- Dropdown Popup Menu -->
           <div class="more-menu" id="moreMenu">
             <div class="more-menu-header">Attendance Options</div>
             <button type="button" onclick="copyAbsentList()">
@@ -1157,7 +1169,7 @@
             </button>
           </div>
 
-          <!-- Output Preview Section -->
+          <!-- Output Box -->
           <div class="footer-output">
             <div class="output-title">
               <h2>
@@ -1184,7 +1196,7 @@
     <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
     <script>
-      // ===== HARDCODED COURSES LIST =====
+      // ===== HARDCODED COURSES =====
       const courses = [
         "Parallel Processing",
         "Parallel Processing Lab",
@@ -1246,13 +1258,12 @@
         ["231311128", "MAHFUJUR RAHMAN SHANTO"],
       ].map(([id, name]) => ({ id, name }));
 
-      // ===== STATE =====
+      // ===== APPLICATION STATE =====
       let attendance = {};
       let currentFilter = "all";
       let currentDate = getTodayDate();
       let currentCourse = getSavedCourse();
       let previousAttendance = null;
-      let animateCheckboxId = null;
 
       // DOM Elements
       const studentList = document.getElementById("studentList");
@@ -1308,8 +1319,9 @@
         return courses[0];
       }
 
+      // Shared key for date: Switching course keeps marked students intact!
       function storageKey() {
-        return `attendance_${currentDate}_${currentCourse.replace(/\s+/g, "_")}`;
+        return `attendance_${currentDate}`;
       }
 
       function saveAttendance() {
@@ -1322,11 +1334,9 @@
 
       function loadAttendance() {
         try {
-          // Check for course-specific key first, then fallback to general date key
-          const key = storageKey();
           const saved =
-            localStorage.getItem(key) ||
-            localStorage.getItem(`attendance_${currentDate}`);
+            localStorage.getItem(storageKey()) ||
+            localStorage.getItem(`attendance_${currentDate}_${currentCourse.replace(/\s+/g, "_")}`);
           attendance = saved ? JSON.parse(saved) : {};
         } catch (e) {
           console.error("Failed to load from localStorage", e);
@@ -1353,12 +1363,11 @@
           localStorage.setItem("attendance_course", currentCourse);
         } catch (e) {}
 
-        loadAttendance();
-        previousAttendance = null;
-        renderStudents();
+        // Keeps marked students intact
+        saveAttendance();
         updateStats();
         updateOutputLive();
-        showToast(`Course: ${currentCourse}`);
+        showToast(`📚 Switched to: ${currentCourse}`);
       }
 
       // ===== DATE MANAGEMENT =====
@@ -1379,7 +1388,7 @@
         renderStudents();
         updateStats();
         updateOutputLive();
-        showToast("Attendance loaded for selected date");
+        showToast("Attendance loaded");
       }
 
       function changeDate(days) {
@@ -1400,10 +1409,38 @@
         datePicker.click();
       }
 
+      // ===== FAST IN-PLACE DOM UPDATE (NO DAKKHA / ZERO FLICKER) =====
+      function applyAttendanceToDOM(id, isPresent) {
+        const row = studentList.querySelector(`[data-id="${id}"]`);
+        if (!row) return;
+
+        if (isPresent) {
+          row.classList.add("present");
+        } else {
+          row.classList.remove("present");
+        }
+
+        const statusText = row.querySelector(".status-text");
+        if (statusText) {
+          statusText.textContent = isPresent ? "● PRESENT" : "○ ABSENT";
+        }
+
+        const checkbox = row.querySelector('input[type="checkbox"]');
+        if (checkbox && checkbox.checked !== isPresent) {
+          checkbox.checked = isPresent;
+        }
+
+        // If currently filtering, smooth hide/show without rebuilding list
+        if (currentFilter === "present") {
+          row.style.display = isPresent ? "" : "none";
+        } else if (currentFilter === "absent") {
+          row.style.display = !isPresent ? "" : "none";
+        }
+      }
+
       // ===== ATTENDANCE TOGGLE =====
       function setAttendance(id, checked) {
         previousAttendance = JSON.stringify(attendance);
-        animateCheckboxId = id;
 
         if (checked) {
           attendance[id] = true;
@@ -1411,27 +1448,29 @@
           delete attendance[id];
         }
 
+        applyAttendanceToDOM(id, checked);
         saveAttendance();
-        renderStudents();
+        updateStats();
       }
 
       function toggleStudentRow(id) {
         previousAttendance = JSON.stringify(attendance);
-        animateCheckboxId = id;
 
         if (attendance[id]) {
           delete attendance[id];
+          applyAttendanceToDOM(id, false);
           showToast("Marked Absent");
         } else {
           attendance[id] = true;
+          applyAttendanceToDOM(id, true);
           showToast("✓ Marked Present");
         }
 
         saveAttendance();
-        renderStudents();
+        updateStats();
       }
 
-      // ===== STUDENT RENDERING =====
+      // ===== STUDENT RENDERING (ONLY WHEN NEEDED) =====
       function renderStudents() {
         if (!studentList) return;
         studentList.innerHTML = "";
@@ -1466,6 +1505,7 @@
           const isPresent = !!attendance[s.id];
           const row = document.createElement("div");
           row.className = "student" + (isPresent ? " present" : "");
+          row.setAttribute("data-id", s.id);
 
           row.innerHTML = `
             <div class="serial">${String(students.indexOf(s) + 1).padStart(2, "0")}</div>
@@ -1497,26 +1537,6 @@
         });
 
         updateStats();
-
-        // Checkbox tap animation for current touched item
-        if (animateCheckboxId) {
-          requestAnimationFrame(() => {
-            const rows = studentList.querySelectorAll(".student");
-            rows.forEach((r) => {
-              const idEl = r.querySelector(".student-id");
-              const cb = r.querySelector('input[type="checkbox"]');
-              if (
-                idEl &&
-                cb &&
-                idEl.textContent.trim() === animateCheckboxId.slice(-3)
-              ) {
-                cb.classList.add("just-tapped");
-                setTimeout(() => cb.classList.remove("just-tapped"), 240);
-              }
-            });
-          });
-        }
-        animateCheckboxId = null;
       }
 
       // ===== STATS & OUTPUT =====
@@ -1570,7 +1590,6 @@
         renderStudents();
       }
 
-      // Format present message required: "assalamulikm sir, [course name] date er present list"
       function buildPresentMessage() {
         const presentStudents = students.filter((s) => !!attendance[s.id]);
         if (!presentStudents.length) return "";
@@ -1631,7 +1650,6 @@
         showToast(`✓ ${ids.length} Present IDs copied (raw)`);
       }
 
-      // User requested feature: date first, then absent students' names and IDs
       function copyAbsentList() {
         closeMoreMenu();
         const absentStudents = students.filter((s) => !attendance[s.id]);
@@ -1724,7 +1742,7 @@
           return showToast("Attendance is already empty");
         }
 
-        if (!confirm(`Reset attendance for ${currentCourse}?`)) return;
+        if (!confirm(`Reset attendance for today?`)) return;
 
         previousAttendance = JSON.stringify(attendance);
         attendance = {};
@@ -1838,7 +1856,7 @@
         renderStudents();
         updateStats();
 
-        // Register Service Worker for offline PWA support (when hosted online)
+        // Register Service Worker for offline PWA support
         if ("serviceWorker" in navigator && window.location.protocol.startsWith("http")) {
           navigator.serviceWorker
             .register("./sw.js")
